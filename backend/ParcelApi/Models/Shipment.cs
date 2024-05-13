@@ -14,25 +14,25 @@ public class Shipment
 {
 
   [Key]
-  public required string ShipmentId { get; set; }
+  [RegularExpression("^[A-Z0-9]{3}-[A-Z0-9]{6}$", ErrorMessage = "Parcel ID must follow the format XXX-XXXXXX")]
+  public string? ShipmentId { get; set; }
 
-  [Required]
+  [Required(ErrorMessage = "Airport is required")]
   public required AirportCodes Airport { get; set; }
 
-  [Required]
+  [Required(ErrorMessage = "Flight number is required")]
+  [RegularExpression(@"^[A-Za-z]{2}\d{4}$", ErrorMessage = "Flight number must follow the format LLNNNNN, where 'L' is a letter and 'N' is a number")]
   public required string FlightNumber { get; set; }
 
   [Required]
   public required DateTime FlightDate { get; set; }
 
-  [Required]
-  public required List<Bag> Bags { get; set; }
+  public List<Bag> Bags { get; set; }
 
-  public required bool IsFinalised { get; set; }
+  public bool IsFinalised { get; set; }
 
-  public Shipment(string shipmentId)
+  public Shipment()
   {
-    ShipmentId = shipmentId;
     Bags = new List<Bag>();
     IsFinalised = false;
   }
