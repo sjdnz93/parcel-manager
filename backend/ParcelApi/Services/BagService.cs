@@ -1,5 +1,6 @@
 ﻿using ParcelApi.Helpers;
 using ParcelApi.Models;
+using ParcelApi.Models.Bags;
 
 namespace ParcelApi.Services;
 
@@ -12,15 +13,15 @@ public class BagService
   {
     ParcelBags = new List<ParcelBag>
     {
-      new ParcelBag("AAAAAAAAAAAAAAA")
+      new ParcelBag("AAAAAAAAAAAAAAA", "Parcel")
       {
         Parcels = new List<Parcel>()
       },
-      new ParcelBag("BBBBBBBBBBBBBBB")
+      new ParcelBag("BBBBBBBBBBBBBBB", "Parcel")
       {
         Parcels = new List<Parcel>()
       },
-      new ParcelBag("CCCCCCCCCCCCCC")
+      new ParcelBag("CCCCCCCCCCCCCCC", "Parcel")
       {
         Parcels = new List<Parcel>()
       }
@@ -28,7 +29,7 @@ public class BagService
 
     LetterBags = new List<LetterBag>
     {
-      new LetterBag("DDDDDDDDDDDDDDD")
+      new LetterBag("DDDDDDDDDDDDDDD", "Letter")
       {
         LetterCount = 0,
         Weight = 0,
@@ -43,27 +44,20 @@ public class BagService
 
   public static List<Bag> GetAllBags()
   {
-    var parcelBags = GetAllParcelBags().Cast<Bag>();
-    var letterBags = GetAllLetterBags().Cast<Bag>();
+    var parcelBags = GetAllParcelBags();
+    var letterBags = GetAllLetterBags();
 
-    return parcelBags.Concat(letterBags).ToList();
+    var bags = new List<Bag>();
+    bags.AddRange(parcelBags);
+    bags.AddRange(letterBags);
+    return bags;
   }
+
+}
 
   // public static Bag? Get(string id) => Bags.FirstOrDefault(b => b.BagId == id);
 
-  // public static void Add(Bag bag)
-  // {
-  //   var bagList = GetAll();
-  //   while (true)
-  //   {
-  //     bag.BagId = IdNumberHelpers.GenerateBagId();
-  //     if (!bagList.Any(x => x.BagId == bag.BagId))
-  //     {
-  //       Bags.Add(bag);
-  //       break;
-  //     }
-  //   }
-  // }
+
 
   // public static void Delete(string id)
   // {
@@ -71,6 +65,3 @@ public class BagService
   //   if (bag == null) throw new Exception("Bag with this ID does not exist in system");
   //   Bags.Remove(bag);
   // }
-
-
-}

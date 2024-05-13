@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ParcelApi.Models.Bags;
 
 namespace ParcelApi.Models;
 
@@ -18,6 +19,7 @@ public class Shipment
   public string? ShipmentId { get; set; }
 
   [Required(ErrorMessage = "Airport is required")]
+  [EnumDataType(typeof(AirportCodes), ErrorMessage = "Invalid Airport code")]
   public required AirportCodes Airport { get; set; }
 
   [Required(ErrorMessage = "Flight number is required")]
@@ -27,15 +29,9 @@ public class Shipment
   [Required]
   public required DateTime FlightDate { get; set; }
 
-  public List<Bag> Bags { get; set; }
+  public List<Bag>? Bags { get; set; }
 
   public bool IsFinalised { get; set; }
-
-  public Shipment()
-  {
-    Bags = new List<Bag>();
-    IsFinalised = false;
-  }
 
 }
 

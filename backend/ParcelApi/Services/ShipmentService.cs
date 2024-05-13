@@ -1,5 +1,6 @@
 ﻿using ParcelApi.Helpers;
 using ParcelApi.Models;
+using ParcelApi.Models.Bags;
 
 namespace ParcelApi.Services;
 
@@ -38,12 +39,36 @@ public static class ShipmentService
     while (true)
     {
       shipment.ShipmentId = IdNumberHelpers.GenerateShipmentId();
+      shipment.Bags = new List<Bag>();
+      shipment.IsFinalised = false;
       if (!shipmentList.Any(x => x.ShipmentId == shipment.ShipmentId))
       {
         Shipments.Add(shipment);
         break;
       }
     }
+  }
+
+  public static void AddParcelBagToShipment(Shipment shipment, ParcelBag bag)
+  {
+    if (shipment != null)
+    {
+      shipment.Bags ??= new List<Bag>();
+      ParcelBagService.AddParcelBag(bag);
+      shipment.Bags.Add(bag);
+    }
+
+  }
+
+  public static void AddLetterBagToShipment(Shipment shipment, LetterBag bag)
+  {
+    if (shipment != null)
+    {
+      shipment.Bags ??= new List<Bag>();
+      LetterBagService.AddLetterBag(bag);
+      shipment.Bags.Add(bag);
+    }
+
   }
 
 }

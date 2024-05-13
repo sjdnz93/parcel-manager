@@ -33,8 +33,6 @@ public static class IdNumberHelpers
       }
     }
 
-    Console.WriteLine($"Parcel ID: {sb.ToString()}");
-
     return sb.ToString();
   }
 
@@ -64,8 +62,6 @@ public static class IdNumberHelpers
 
     }
 
-    Console.WriteLine($"Shipment ID: {sb.ToString()}");
-
     return sb.ToString();
   }
 
@@ -80,8 +76,6 @@ public static class IdNumberHelpers
     {
       sb.Append(characters[new Random().Next(0, characters.Length)]);
     }
-
-    Console.WriteLine($"Bag ID: {sb.ToString()}");
 
     return sb.ToString();
   }
