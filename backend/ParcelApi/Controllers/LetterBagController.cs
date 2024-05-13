@@ -16,11 +16,29 @@ public class LetterBagController : ControllerBase
     return bags;
   }
 
-    [HttpPost]
-  public ActionResult<LetterBag> CreateParcelBag([FromBody] LetterBag bag)
+  [HttpPut("{id}/add-letters")]
+  public IActionResult Update(string id, int letterCount, decimal weight, decimal price)
   {
-    LetterBagService.AddLetterBag(bag);
-    return bag;
+    var bag = BagService.GetLetterBagById(id);
+    if (bag == null)
+    {
+      return NotFound("Bag with this ID does not exist in system");
+    }
+
+    if (bag.BagId != id)
+    {
+      return BadRequest();
+    }
+
+    LetterBagService.AddLettersToBag(bag, letterCount, weight, price);
+    return Ok();
   }
 
 }
+
+// [HttpPost]
+// public ActionResult<LetterBag> CreateParcelBag([FromBody] LetterBag bag)
+// {
+//   LetterBagService.AddLetterBag(bag);
+//   return bag;
+// }

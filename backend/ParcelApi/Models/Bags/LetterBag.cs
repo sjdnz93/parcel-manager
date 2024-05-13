@@ -20,11 +20,7 @@ public class LetterBag : Bag
   public required decimal Price { get; set; }
 
   public LetterBag(string bagId, string bagType) : base(bagId, bagType)
-  {
-    LetterCount = 0;
-    Weight = 0;
-    Price = 0;
-  }
+  {}
 
 }
 

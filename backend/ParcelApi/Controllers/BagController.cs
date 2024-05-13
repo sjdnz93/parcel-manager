@@ -24,14 +24,16 @@ public class BagController : ControllerBase
     return bags;
   }
 
-  // [HttpPost]
-  // public IActionResult Create(Bag bag)
-  // {
-  //   BagService.Add(bag);
-  //   return CreatedAtAction(nameof(GetAllBags), new { id = bag.BagId }, bag);
-  // }
+
 
 }
+
+// [HttpPost]
+// public IActionResult Create(Bag bag)
+// {
+//   BagService.Add(bag);
+//   return CreatedAtAction(nameof(GetAllBags), new { id = bag.BagId }, bag);
+// }
 
 // [HttpGet("{id}")]
 // public ActionResult<Bag> Get(string id)

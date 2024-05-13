@@ -7,8 +7,7 @@ namespace ParcelApi.Services;
 
 public class ParcelBagService
 {
-
-    public static void AddParcelBag(ParcelBag bag)
+  public static void AddParcelBag(ParcelBag bag)
   {
     var bagListFromDb = BagService.GetAllBags();
 
@@ -22,6 +21,16 @@ public class ParcelBagService
         BagService.ParcelBags.Add(bag);
         break;
       }
+    }
+  }
+
+  public static void AddParcelToBag(ParcelBag bag, Parcel parcel)
+  {
+    if (bag != null && parcel != null) 
+    {
+      bag.Parcels ??= new List<Parcel>();
+      ParcelService.Add(parcel);
+      bag.Parcels.Add(parcel);
     }
   }
 

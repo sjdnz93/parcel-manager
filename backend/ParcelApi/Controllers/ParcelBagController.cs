@@ -1,6 +1,7 @@
 ﻿using ParcelApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using ParcelApi.Models.Bags;
+using ParcelApi.Models;
 
 namespace ParcelApi.Controllers;
 
@@ -16,11 +17,40 @@ public class ParcelBagController : ControllerBase
     return bags;
   }
 
-  [HttpPost]
-  public ActionResult<ParcelBag> CreateParcelBag([FromBody] ParcelBag bag)
+  [HttpGet("{id}")]
+  public ActionResult<ParcelBag> Get(string id)
   {
-    ParcelBagService.AddParcelBag(bag);
+    var bag = BagService.GetParcelBagById(id);
+    if (bag == null)
+    {
+      return NotFound();
+    }
     return bag;
   }
 
+  [HttpPut("{id}/add-parcel")]
+  public IActionResult Update(string id, Parcel parcel)
+  {
+    var bag = BagService.GetParcelBagById(id);
+    if (bag == null)
+    {
+      return NotFound("Bag with this ID does not exist in system");
+    }
+
+    if (bag.BagId != id)
+    {
+      return BadRequest();
+    }
+
+    ParcelBagService.AddParcelToBag(bag, parcel);
+    return Ok();
+  }
+
 }
+
+  // [HttpPost]
+  // public ActionResult<ParcelBag> CreateParcelBag([FromBody] ParcelBag bag)
+  // {
+  //   ParcelBagService.AddParcelBag(bag);
+  //   return bag;
+  // }
