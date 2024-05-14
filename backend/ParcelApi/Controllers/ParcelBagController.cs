@@ -31,26 +31,34 @@ public class ParcelBagController : ControllerBase
   [HttpPut("{id}/add-parcel")]
   public IActionResult Update(string id, Parcel parcel)
   {
-    var bag = BagService.GetParcelBagById(id);
-    if (bag == null)
+    try
     {
-      return NotFound("Bag with this ID does not exist in system");
+      var bag = BagService.GetParcelBagById(id);
+      if (bag == null)
+      {
+        return NotFound("Bag with this ID does not exist in system");
+      }
+
+      if (bag.BagId != id)
+      {
+        return BadRequest("Unauthorised");
+      }
+
+      ParcelBagService.AddParcelToBag(bag, parcel);
+      return Ok();
+    }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to add parcel to bag - Error: {ex.Message}");
     }
 
-    if (bag.BagId != id)
-    {
-      return BadRequest();
-    }
-
-    ParcelBagService.AddParcelToBag(bag, parcel);
-    return Ok();
   }
 
 }
 
-  // [HttpPost]
-  // public ActionResult<ParcelBag> CreateParcelBag([FromBody] ParcelBag bag)
-  // {
-  //   ParcelBagService.AddParcelBag(bag);
-  //   return bag;
-  // }
+// [HttpPost]
+// public ActionResult<ParcelBag> CreateParcelBag([FromBody] ParcelBag bag)
+// {
+//   ParcelBagService.AddParcelBag(bag);
+//   return bag;
+// }

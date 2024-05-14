@@ -15,6 +15,7 @@ public class LetterBagService
     {
       bag.BagId = IdNumberHelpers.GenerateBagId();
       bag.BagType = "Letter";
+      bag.IsFinalised = false;
       if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
       {
         BagService.LetterBags.Add(bag);
@@ -25,12 +26,22 @@ public class LetterBagService
 
   public static void AddLettersToBag(LetterBag bag, int letterCount, decimal weight, decimal price)
   {
-    if (bag != null && letterCount > 0 && weight > 0 && price > 0)
+    try
     {
-      bag.LetterCount += letterCount;
-      bag.Weight += weight;
-      bag.Price += price;
+      if (bag != null && letterCount > 0 && weight > 0 && price > 0)
+      {
+        if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add letters to bags in this shipment");
+        bag.LetterCount += letterCount;
+        bag.Weight += weight;
+        bag.Price += price;
+      } else throw new Exception("Price, weight and letter count must be greater than 0");
     }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to add letters to bag - Error: {ex.Message}");
+      throw;
+    }
+
   }
 
 }

@@ -36,62 +36,84 @@ public class ShipmentController : ControllerBase
   }
 
   [HttpPut("{id}/add-parcel-bag")]
-  public IActionResult Update(string id, ParcelBag bag)
+  public IActionResult AddParcelBagToShipment(string id, ParcelBag bag)
   {
-    var shipment = ShipmentService.Get(id);
-    if (shipment == null)
+    try
     {
-      return NotFound();
-    }
+      var shipment = ShipmentService.Get(id);
+      if (shipment == null)
+      {
+        return NotFound("Shipment with this ID does not exist");
+      }
 
-    if (shipment.ShipmentId != id)
+      if (shipment.ShipmentId != id)
+      {
+        return BadRequest("Not authorised");
+      }
+
+      ShipmentService.AddParcelBagToShipment(shipment, bag);
+
+      return Ok();
+    }
+    catch (Exception ex)
     {
-      return BadRequest();
+      return BadRequest($"Failed to add parcel bag to shipment - Error: {ex.Message}");
     }
-
-    ShipmentService.AddParcelBagToShipment(shipment, bag);
-
-    return Ok();
 
   }
 
   [HttpPut("{id}/add-letter-bag")]
-  public IActionResult UpdateShipment(string id, LetterBag bag)
+  public IActionResult AddLetterBagToShipment(string id, LetterBag bag)
   {
-    var shipment = ShipmentService.Get(id);
-    if (shipment == null)
+    try
     {
-      return NotFound();
-    }
+      var shipment = ShipmentService.Get(id);
+      if (shipment == null)
+      {
+        return NotFound("Shipment with this ID does not exist");
+      }
 
-    if (shipment.ShipmentId != id)
+      if (shipment.ShipmentId != id)
+      {
+        return BadRequest("Not authorised");
+      }
+
+      ShipmentService.AddLetterBagToShipment(shipment, bag);
+
+      return Ok();
+
+    }
+    catch (Exception ex)
     {
-      return BadRequest();
+      return BadRequest($"Failed to add letter bag to shipment - Error: {ex.Message}");
     }
-
-    ShipmentService.AddLetterBagToShipment(shipment, bag);
-
-    return Ok();
 
   }
 
   [HttpPut("{id}/finalise-shipment")]
   public IActionResult FinaliseShipment(string id)
   {
-    var shipment = ShipmentService.Get(id);
-    if (shipment == null)
+    try
     {
-      return NotFound();
-    }
+      var shipment = ShipmentService.Get(id);
+      if (shipment == null)
+      {
+        return NotFound();
+      }
 
-    if (shipment.ShipmentId != id)
+      if (shipment.ShipmentId != id)
+      {
+        return BadRequest();
+      }
+
+      ShipmentService.FinaliseShipment(shipment);
+
+      return Ok();
+    }
+    catch (Exception ex)
     {
-      return BadRequest();
+      return BadRequest($"Failed to finalise shipment - Error: {ex.Message}");
     }
-
-    ShipmentService.FinaliseShipment(shipment);
-
-    return Ok();
 
   }
 

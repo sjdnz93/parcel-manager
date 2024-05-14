@@ -16,6 +16,7 @@ public class ParcelBagService
       bag.BagId = IdNumberHelpers.GenerateBagId();
       bag.BagType = "Parcel";
       bag.Parcels = new List<Parcel>();
+      bag.IsFinalised = false;
       if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
       {
         BagService.ParcelBags.Add(bag);
@@ -26,12 +27,22 @@ public class ParcelBagService
 
   public static void AddParcelToBag(ParcelBag bag, Parcel parcel)
   {
-    if (bag != null && parcel != null) 
+    try
     {
-      bag.Parcels ??= new List<Parcel>();
-      ParcelService.Add(parcel);
-      bag.Parcels.Add(parcel);
+      if (bag != null && parcel != null)
+      {
+        if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add parcels to bags in this shipment.");
+        bag.Parcels ??= new List<Parcel>();
+        ParcelService.Add(parcel);
+        bag.Parcels.Add(parcel);
+      }
     }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to add parcel to bag - Error: {ex.Message}");
+      throw;
+    }
+
   }
 
 }

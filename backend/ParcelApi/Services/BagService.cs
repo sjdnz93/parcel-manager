@@ -15,14 +15,17 @@ public class BagService
     {
       new ParcelBag("AAAAAAAAAAAAAAA", "Parcel")
       {
+        IsFinalised = false,
         Parcels = new List<Parcel>()
       },
       new ParcelBag("BBBBBBBBBBBBBBB", "Parcel")
       {
+        IsFinalised = false,
         Parcels = new List<Parcel>()
       },
       new ParcelBag("CCCCCCCCCCCCCCC", "Parcel")
       {
+        IsFinalised = false,
         Parcels = new List<Parcel>()
       }
     };
@@ -31,6 +34,7 @@ public class BagService
     {
       new LetterBag("DDDDDDDDDDDDDDD", "Letter")
       {
+        IsFinalised = false,
         LetterCount = 0,
         Weight = 0,
         Price = 0

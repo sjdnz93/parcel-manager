@@ -19,19 +19,28 @@ public class LetterBagController : ControllerBase
   [HttpPut("{id}/add-letters")]
   public IActionResult Update(string id, int letterCount, decimal weight, decimal price)
   {
-    var bag = BagService.GetLetterBagById(id);
-    if (bag == null)
+    try
     {
-      return NotFound("Bag with this ID does not exist in system");
+      var bag = BagService.GetLetterBagById(id);
+      if (bag == null)
+      {
+        return NotFound("Bag with this ID does not exist in system");
+      }
+
+      if (bag.BagId != id)
+      {
+        return BadRequest("Unauthorised");
+      }
+
+      LetterBagService.AddLettersToBag(bag, letterCount, weight, price);
+      return Ok();
+
+    }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to add letters to bag - Error: {ex.Message}");
     }
 
-    if (bag.BagId != id)
-    {
-      return BadRequest();
-    }
-
-    LetterBagService.AddLettersToBag(bag, letterCount, weight, price);
-    return Ok();
   }
 
 }

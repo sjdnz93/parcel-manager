@@ -10,10 +10,13 @@ public class Bag
 
   public string? BagType { get; set; }
 
+  public required bool IsFinalised { get; set; }
+
   public Bag(string bagId, string bagType) 
   {
     BagId = bagId;
     BagType = bagType;
+    IsFinalised = false;
   }
 }
 
