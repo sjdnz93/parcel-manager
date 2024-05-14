@@ -9,30 +9,7 @@ public static class ParcelService
 
   static ParcelService()
   {
-    Parcels = new List<Parcel>
-    {
-      new Parcel {
-        ParcelId = "AA123456AA",
-        RecipientName = "Simon Davis",
-        DestinationCountry = "EE",
-        Weight = 25.553m,
-        Price = 70.50m
-      },
-      new Parcel {
-        ParcelId = "BB123456BB",
-        RecipientName = "Johanna Ojamae",
-        DestinationCountry = "EE",
-        Weight = 15.553m,
-        Price = 99.00m
-      },
-      new Parcel {
-        ParcelId = "CC123456CC",
-        RecipientName = "Richy Agarwal",
-        DestinationCountry = "UK",
-        Weight = 5.5m,
-        Price = 20.20m
-      }
-    };
+    Parcels = new List<Parcel>();
   }
 
   public static List<Parcel> GetAll() => Parcels;

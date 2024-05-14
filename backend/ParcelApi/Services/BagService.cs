@@ -11,35 +11,9 @@ public class BagService
 
   static BagService()
   {
-    ParcelBags = new List<ParcelBag>
-    {
-      new ParcelBag("AAAAAAAAAAAAAAA", "Parcel")
-      {
-        IsFinalised = false,
-        Parcels = new List<Parcel>()
-      },
-      new ParcelBag("BBBBBBBBBBBBBBB", "Parcel")
-      {
-        IsFinalised = false,
-        Parcels = new List<Parcel>()
-      },
-      new ParcelBag("CCCCCCCCCCCCCCC", "Parcel")
-      {
-        IsFinalised = false,
-        Parcels = new List<Parcel>()
-      }
-    };
+    ParcelBags = new List<ParcelBag>();
 
-    LetterBags = new List<LetterBag>
-    {
-      new LetterBag("DDDDDDDDDDDDDDD", "Letter")
-      {
-        IsFinalised = false,
-        LetterCount = 0,
-        Weight = 0,
-        Price = 0
-      }
-    };
+    LetterBags = new List<LetterBag>();
   }
 
   public static List<ParcelBag> GetAllParcelBags() => ParcelBags;

@@ -16,6 +16,7 @@ public static class ShipmentService
       {
         ShipmentId = IdNumberHelpers.GenerateShipmentId(),
         Airport = AirportCodes.TLL,
+        DestinationCountry = "FI",
         FlightNumber = "TL123",
         FlightDate = DateTime.Now.AddDays(1),
       },
@@ -23,6 +24,7 @@ public static class ShipmentService
       {
         ShipmentId = "123-BBBBBB",
         Airport = AirportCodes.RIX,
+        DestinationCountry = "EE",
         FlightNumber = "FN126",
         FlightDate = DateTime.Now.AddDays(6),
       }
@@ -56,6 +58,11 @@ public static class ShipmentService
       if (shipment != null)
       {
         if (shipment.IsFinalised) throw new Exception("Shipment has already been finalised");
+
+        if (LocationHelpers.IsFlightInternal(bag.DestinationCountry, shipment.Airport)) throw new Exception("Bag destination is in the same country as shipment origin airport. Do you really need to make an internal flight to transport this package? Probably not.");
+
+        if (!LocationHelpers.DoesShipmentDestinationMatchBagDestination(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
+
         shipment.Bags ??= new List<Bag>();
         ParcelBagService.AddParcelBag(bag);
         shipment.Bags.Add(bag);
@@ -77,6 +84,11 @@ public static class ShipmentService
       if (shipment != null)
       {
         if (shipment.IsFinalised) throw new Exception("Shipment has already been finalised");
+
+        if (LocationHelpers.IsFlightInternal(bag.DestinationCountry, shipment.Airport)) throw new Exception("Bag destination is in the same country as shipment origin airport. Do you really need to make an internal flight to transport this package? Probably not.");
+
+        if (!LocationHelpers.DoesShipmentDestinationMatchBagDestination(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
+
         shipment.Bags ??= new List<Bag>();
         LetterBagService.AddLetterBag(bag);
         shipment.Bags.Add(bag);

@@ -2,6 +2,8 @@
 
 namespace ParcelApi.Models;
 
+
+
 public class Parcel
 {
   
@@ -14,6 +16,7 @@ public class Parcel
   public required string RecipientName { get; set; }
   
   [Required(ErrorMessage = "DestinationCountry is required")]
+  [RegularExpression("^(EE|LV|FI)$", ErrorMessage = "Country must be 'EE', 'LV', or 'FI'")]
   public required string DestinationCountry { get; set; }
 
   [Required(ErrorMessage = "Weight is required")]

@@ -32,6 +32,9 @@ public class ParcelBagService
       if (bag != null && parcel != null)
       {
         if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add parcels to bags in this shipment.");
+
+        if (!LocationHelpers.DoesBagDestinationMatchParcelDestination(bag.DestinationCountry, parcel.DestinationCountry)) throw new Exception($"This bag is bound for {bag.DestinationCountry}. You cannot add a parcel to {parcel.DestinationCountry} to this bag.");
+        
         bag.Parcels ??= new List<Parcel>();
         ParcelService.Add(parcel);
         bag.Parcels.Add(parcel);

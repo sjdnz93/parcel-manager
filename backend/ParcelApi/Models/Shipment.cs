@@ -22,6 +22,10 @@ public class Shipment
   [EnumDataType(typeof(AirportCodes), ErrorMessage = "Invalid Airport code")]
   public required AirportCodes Airport { get; set; }
 
+  [Required(ErrorMessage = "Destination country is required")]
+  [RegularExpression("^(EE|LV|FI)$", ErrorMessage = "Country must be 'EE', 'LV', or 'FI'")]
+  public required string DestinationCountry { get; set; }
+
   [Required(ErrorMessage = "Flight number is required")]
   [RegularExpression(@"^[A-Za-z]{2}\d{4}$", ErrorMessage = "Flight number must follow the format LLNNNNN, where 'L' is a letter and 'N' is a number")]
   public required string FlightNumber { get; set; }

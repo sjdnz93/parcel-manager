@@ -10,7 +10,11 @@ public class Bag
 
   public string? BagType { get; set; }
 
-  public required bool IsFinalised { get; set; }
+  public bool IsFinalised { get; set; }
+
+  [Required(ErrorMessage = "DestinationCountry is required")]
+  [RegularExpression("^(EE|LV|FI)$", ErrorMessage = "Country must be 'EE', 'LV', or 'FI'")]
+  public required string DestinationCountry { get; set; }
 
   public Bag(string bagId, string bagType) 
   {

@@ -16,6 +16,9 @@ public class LetterBagService
       bag.BagId = IdNumberHelpers.GenerateBagId();
       bag.BagType = "Letter";
       bag.IsFinalised = false;
+      bag.Weight = 0;
+      bag.Price = 0;
+      bag.LetterCount = 0;
       if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
       {
         BagService.LetterBags.Add(bag);
@@ -31,10 +34,15 @@ public class LetterBagService
       if (bag != null && letterCount > 0 && weight > 0 && price > 0)
       {
         if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add letters to bags in this shipment");
+        
+        weight = decimal.Parse(weight.ToString("#.###")); // Maximum of 3 decimal places for weight
+        price = decimal.Parse(price.ToString("#.##"));     // Maximum of 2 decimal places for price
+
         bag.LetterCount += letterCount;
         bag.Weight += weight;
         bag.Price += price;
-      } else throw new Exception("Price, weight and letter count must be greater than 0");
+      }
+      else throw new Exception("Price, weight and letter count must be greater than 0");
     }
     catch (Exception ex)
     {
