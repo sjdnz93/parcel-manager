@@ -44,10 +44,3 @@ public class LetterBagController : ControllerBase
   }
 
 }
-
-// [HttpPost]
-// public ActionResult<LetterBag> CreateParcelBag([FromBody] LetterBag bag)
-// {
-//   LetterBagService.AddLetterBag(bag);
-//   return bag;
-// }

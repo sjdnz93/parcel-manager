@@ -23,27 +23,9 @@ public class ParcelController : ControllerBase
 
     if (parcel == null)
     {
-      return NotFound();
+      return NotFound("Parcel could not be found");
     }
     return parcel;
   }
 
 }
-
-// [HttpPost]
-// public IActionResult Create(Parcel parcel)
-// {
-//   ParcelService.Add(parcel);
-//   return CreatedAtAction(nameof(GetAll), new { id = parcel.ParcelId }, parcel);
-// }
-
-// [HttpDelete("{id}")]
-// public IActionResult Delete(string id)
-// {
-//   var parcel = ParcelService.Get(id);
-//   if (parcel is null)
-//     return NotFound();
-
-//   ParcelService.Delete(id);
-//   return NoContent();
-// }

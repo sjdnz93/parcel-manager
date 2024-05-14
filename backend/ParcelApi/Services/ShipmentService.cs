@@ -10,45 +10,58 @@ public static class ShipmentService
 
   static ShipmentService()
   {
-    Shipments = new List<Shipment>
-    {
-      new Shipment()
-      {
-        ShipmentId = IdNumberHelpers.GenerateShipmentId(),
-        Airport = AirportCodes.TLL,
-        DestinationCountry = "FI",
-        FlightNumber = "TL123",
-        FlightDate = DateTime.Now.AddDays(1),
-      },
-      new Shipment()
-      {
-        ShipmentId = "123-BBBBBB",
-        Airport = AirportCodes.RIX,
-        DestinationCountry = "EE",
-        FlightNumber = "FN126",
-        FlightDate = DateTime.Now.AddDays(6),
-      }
-    };
+    Shipments = new List<Shipment>();
   }
 
   public static List<Shipment> GetAll() => Shipments;
 
-  public static Shipment? Get(string id) => Shipments.FirstOrDefault(s => s.ShipmentId == id);
+  public static Shipment? Get(string id)
+  {
+    try
+    {
+      return Shipments.FirstOrDefault(s => s.ShipmentId == id);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to get shipment - Error: {ex.Message}");
+      throw;
+    }
+
+  }
 
   public static void Add(Shipment shipment)
   {
-    var shipmentList = GetAll();
-    while (true)
+    try
     {
-      shipment.ShipmentId = IdNumberHelpers.GenerateShipmentId();
-      shipment.Bags = new List<Bag>();
-      shipment.IsFinalised = false;
-      if (!shipmentList.Any(x => x.ShipmentId == shipment.ShipmentId))
+      var shipmentList = GetAll();
+      while (true)
       {
-        Shipments.Add(shipment);
-        break;
+        if (LocationHelpers.IsFlightInternal(shipment.DestinationCountry, shipment.Airport)) throw new Exception("Shipment destination is in the same country as shipment origin airport. Do you really need to make an internal flight to transport this package? Probably not.");
+
+        shipment.ShipmentId = IdNumberHelpers.GenerateShipmentId();
+        shipment.Bags = new List<Bag>();
+        shipment.IsFinalised = false;
+        if (!shipmentList.Any(x => x.ShipmentId == shipment.ShipmentId))
+        {
+          try
+          {
+            Shipments.Add(shipment);
+            break;
+          }
+          catch (Exception ex)
+          {
+            Console.WriteLine($"Failed to add shipment - Error: {ex.Message}");
+            throw;
+          }
+        }
       }
     }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to add shipment - Error: {ex.Message}");
+      throw;
+    }
+
   }
 
   public static void AddParcelBagToShipment(Shipment shipment, ParcelBag bag)

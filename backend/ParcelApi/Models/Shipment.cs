@@ -27,15 +27,21 @@ public class Shipment
   public required string DestinationCountry { get; set; }
 
   [Required(ErrorMessage = "Flight number is required")]
-  [RegularExpression(@"^[A-Za-z]{2}\d{4}$", ErrorMessage = "Flight number must follow the format LLNNNNN, where 'L' is a letter and 'N' is a number")]
+  [RegularExpression(@"^[A-Z]{2}\d{4}$", ErrorMessage = "Flight number must follow the format LLNNNNN, where 'L' is a letter and 'N' is a number")]
   public required string FlightNumber { get; set; }
 
   [Required]
   public required DateTime FlightDate { get; set; }
 
-  public List<Bag>? Bags { get; set; }
+  public List<Bag> Bags { get; set; }
 
   public bool IsFinalised { get; set; }
+
+  public Shipment()
+  {
+    Bags = new List<Bag>();
+    IsFinalised = false;
+  }
 
 }
 

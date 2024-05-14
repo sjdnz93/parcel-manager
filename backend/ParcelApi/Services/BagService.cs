@@ -37,14 +37,3 @@ public class BagService
   }
 
 }
-
-// public static Bag? Get(string id) => Bags.FirstOrDefault(b => b.BagId == id);
-
-
-
-// public static void Delete(string id)
-// {
-//   var bag = Get(id);
-//   if (bag == null) throw new Exception("Bag with this ID does not exist in system");
-//   Bags.Remove(bag);
-// }

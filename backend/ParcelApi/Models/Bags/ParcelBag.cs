@@ -6,10 +6,12 @@ namespace ParcelApi.Models.Bags;
 public class ParcelBag : Bag
 {
   
-  public List<Parcel>? Parcels { get; set; }
+  public List<Parcel> Parcels { get; set; }
 
   public ParcelBag(string bagId, string bagType) : base(bagId, bagType)
-  {}
+  {
+    Parcels = new List<Parcel>();
+  }
 }
 
 

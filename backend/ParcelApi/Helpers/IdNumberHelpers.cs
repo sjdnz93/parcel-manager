@@ -9,7 +9,7 @@ public static class IdNumberHelpers
 
   public static string GenerateParcelId()
   {
-    var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     var numbers = "1234567890";
     var idLength = 10;
 
@@ -38,7 +38,7 @@ public static class IdNumberHelpers
 
   public static string GenerateShipmentId()
   {
-    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";
     var idLength = 10;
 
     StringBuilder sb = new StringBuilder();
@@ -67,7 +67,7 @@ public static class IdNumberHelpers
 
   public static string GenerateBagId()
   {
-    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";
     var idLength = 15;
 
     StringBuilder sb = new StringBuilder();

@@ -23,7 +23,7 @@ public class ShipmentController : ControllerBase
     var shipment = ShipmentService.Get(id);
     if (shipment == null)
     {
-      return NotFound();
+      return NotFound("Shipment could not be found");
     }
     return shipment;
   }
@@ -31,8 +31,20 @@ public class ShipmentController : ControllerBase
   [HttpPost]
   public IActionResult CreateShipment(Shipment shipment)
   {
-    ShipmentService.Add(shipment);
-    return CreatedAtAction(nameof(Get), new { id = shipment.ShipmentId }, shipment);
+    try
+    {
+      if (shipment == null)
+      {
+        return BadRequest("Shipment cannot be null");
+      }
+      ShipmentService.Add(shipment);
+      return CreatedAtAction(nameof(Get), new { id = shipment.ShipmentId }, shipment);
+    }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to create shipment - Error: {ex.Message}");
+    }
+
   }
 
   [HttpPut("{id}/add-parcel-bag")]

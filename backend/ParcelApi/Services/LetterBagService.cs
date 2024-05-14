@@ -9,22 +9,32 @@ public class LetterBagService
 
   public static void AddLetterBag(LetterBag bag)
   {
-    var bagListFromDb = BagService.GetAllBags();
 
-    while (true)
+    try
     {
-      bag.BagId = IdNumberHelpers.GenerateBagId();
-      bag.BagType = "Letter";
-      bag.IsFinalised = false;
-      bag.Weight = 0;
-      bag.Price = 0;
-      bag.LetterCount = 0;
-      if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
+      var bagListFromDb = BagService.GetAllBags();
+
+      while (true)
       {
-        BagService.LetterBags.Add(bag);
-        break;
+        bag.BagId = IdNumberHelpers.GenerateBagId();
+        bag.BagType = "Letter";
+        bag.IsFinalised = false;
+        bag.Weight = 0;
+        bag.Price = 0;
+        bag.LetterCount = 0;
+        if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
+        {
+          BagService.LetterBags.Add(bag);
+          break;
+        }
       }
     }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to add letter bag - Error: {ex.Message}");
+      throw;
+    }
+
   }
 
   public static void AddLettersToBag(LetterBag bag, int letterCount, decimal weight, decimal price)
@@ -34,7 +44,7 @@ public class LetterBagService
       if (bag != null && letterCount > 0 && weight > 0 && price > 0)
       {
         if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add letters to bags in this shipment");
-        
+
         weight = decimal.Parse(weight.ToString("#.###")); // Maximum of 3 decimal places for weight
         price = decimal.Parse(price.ToString("#.##"));     // Maximum of 2 decimal places for price
 
