@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Mvc;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
 using ParcelApi.Services;
@@ -28,7 +29,7 @@ public class ShipmentController : ControllerBase
   }
 
   [HttpPost]
-  public IActionResult Create(Shipment shipment)
+  public IActionResult CreateShipment(Shipment shipment)
   {
     ShipmentService.Add(shipment);
     return CreatedAtAction(nameof(Get), new { id = shipment.ShipmentId }, shipment);
@@ -55,7 +56,7 @@ public class ShipmentController : ControllerBase
   }
 
   [HttpPut("{id}/add-letter-bag")]
-  public IActionResult Update(string id, LetterBag bag)
+  public IActionResult UpdateShipment(string id, LetterBag bag)
   {
     var shipment = ShipmentService.Get(id);
     if (shipment == null)
@@ -69,6 +70,26 @@ public class ShipmentController : ControllerBase
     }
 
     ShipmentService.AddLetterBagToShipment(shipment, bag);
+
+    return Ok();
+
+  }
+
+  [HttpPut("{id}/finalise-shipment")]
+  public IActionResult FinaliseShipment(string id)
+  {
+    var shipment = ShipmentService.Get(id);
+    if (shipment == null)
+    {
+      return NotFound();
+    }
+
+    if (shipment.ShipmentId != id)
+    {
+      return BadRequest();
+    }
+
+    ShipmentService.FinaliseShipment(shipment);
 
     return Ok();
 

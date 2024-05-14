@@ -71,4 +71,43 @@ public static class ShipmentService
 
   }
 
+  public static void FinaliseShipment(Shipment shipment)
+  {
+    var todaysDate = DateTime.Now;
+    if (shipment != null)
+    {
+      if (shipment.Bags == null || shipment.Bags.Count == 0) throw new Exception("Shipment has no bags");
+      if (shipment.FlightDate < todaysDate) throw new Exception("Shipment flight date has passed");
+
+      var bagList = shipment.Bags;
+      foreach (var bag in bagList)
+      {
+        if (bag != null && bag.BagType != null && bag.BagId != null)
+        {
+          if (bag.BagType == "Parcel")
+          {
+            var populatedParcelBag = BagService.GetParcelBagById(bag.BagId);
+            if (populatedParcelBag != null)
+            {
+              if (populatedParcelBag.Parcels == null || populatedParcelBag.Parcels.Count == 0) throw new Exception($"Bag ID {bag.BagId} has no parcels. Please fill bag before finalising shipment.");
+            }
+          }
+          else if (bag.BagType == "Letter")
+          {
+            var populatedLetterBag = BagService.GetLetterBagById(bag.BagId);
+            if (populatedLetterBag != null)
+            {
+              if (populatedLetterBag.LetterCount == 0) throw new Exception($"Bag ID {bag.BagId} has no letters. Please fill bag before finalising shipment.");
+              if (populatedLetterBag.Weight == 0) throw new Exception($"Bag ID {bag.BagId} has no weight. Please fill bag before finalising shipment.");
+              if (populatedLetterBag.Price == 0) throw new Exception($"Bag ID {bag.BagId} has no price. Please cost up the bag before finalising shipment.");
+            }
+          }
+        }
+      }
+
+      shipment.IsFinalised = true;
+
+    }
+  }
+
 }
