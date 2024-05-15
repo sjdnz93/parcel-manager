@@ -1,6 +1,11 @@
+using ParcelApi.Data;
 using ParcelApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("ParcelManager") ?? "Data Source=ParcelManager.db";
+
+builder.Services.AddSqlite<ParcelManagerContext>(connectionString);
 
 // Add services to the container.
 
