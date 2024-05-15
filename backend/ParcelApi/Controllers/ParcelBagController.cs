@@ -7,25 +7,46 @@ namespace ParcelApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ParcelBagController : ControllerBase
+public class ParcelBagController : BagController
 {
+  private readonly ParcelBagService _parcelBagService;
+  public ParcelBagController(BagService bagService, ParcelBagService parcelBagService) : base(bagService)
+  {
+    _parcelBagService = parcelBagService;
+  }
 
   [HttpGet]
   public ActionResult<List<ParcelBag>> GetAllParcelBags()
   {
-    var bags = BagService.GetAllParcelBags();
-    return bags;
+    try
+    {
+      var bags = _bagService.GetAllParcelBags();
+      return bags;
+    }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to get bags - Error: {ex.Message}");
+    }
+
   }
 
   [HttpGet("{id}")]
   public ActionResult<ParcelBag> Get(string id)
   {
-    var bag = BagService.GetParcelBagById(id);
-    if (bag == null)
+    try
     {
-      return NotFound();
+      var bag = _bagService.GetParcelBagById(id);
+      if (bag == null)
+      {
+        return NotFound();
+      }
+      return bag;
     }
-    return bag;
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to get bag - Error: {ex.Message}");
+    }
+
   }
 
   [HttpPut("{id}/add-parcel")]
@@ -33,7 +54,7 @@ public class ParcelBagController : ControllerBase
   {
     try
     {
-      var bag = BagService.GetParcelBagById(id);
+      var bag = _bagService.GetParcelBagById(id);
       if (bag == null)
       {
         return NotFound("Bag with this ID does not exist in system");
@@ -44,7 +65,7 @@ public class ParcelBagController : ControllerBase
         return BadRequest("Unauthorised");
       }
 
-      ParcelBagService.AddParcelToBag(bag, parcel);
+      _parcelBagService.AddParcelToBag(bag, parcel);
       return Ok();
     }
     catch (Exception ex)

@@ -10,22 +10,42 @@ namespace ParcelApi.Controllers;
 [Route("[controller]")]
 public class ShipmentController : ControllerBase
 {
-  public ShipmentController()
+  private readonly ShipmentService _shipmentService;
+
+  public ShipmentController(ShipmentService shipmentService)
   {
+    _shipmentService = shipmentService;
   }
 
   [HttpGet]
-  public ActionResult<List<Shipment>> GetAll() => ShipmentService.GetAll();
+  public ActionResult<List<Shipment>> GetAll() //=> ShipmentService.GetAll();
+  {
+    try
+    {
+      return _shipmentService.GetAll();
+    }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to get shipments - Error: {ex.Message}");
+    }
+  }
 
   [HttpGet("{id}")]
   public ActionResult<Shipment> Get(string id)
   {
-    var shipment = ShipmentService.Get(id);
-    if (shipment == null)
+    try
     {
-      return NotFound("Shipment could not be found");
+      var shipment = _shipmentService.Get(id);
+      if (shipment == null)
+      {
+        return NotFound("Shipment could not be found");
+      }
+      return shipment;
     }
-    return shipment;
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to get shipment - Error: {ex.Message}");
+    }
   }
 
   [HttpPost]
@@ -37,7 +57,7 @@ public class ShipmentController : ControllerBase
       {
         return BadRequest("Shipment cannot be null");
       }
-      ShipmentService.Add(shipment);
+      _shipmentService.Add(shipment);
       return CreatedAtAction(nameof(Get), new { id = shipment.ShipmentId }, shipment);
     }
     catch (Exception ex)
@@ -52,7 +72,7 @@ public class ShipmentController : ControllerBase
   {
     try
     {
-      var shipment = ShipmentService.Get(id);
+      var shipment = _shipmentService.Get(id);
       if (shipment == null)
       {
         return NotFound("Shipment with this ID does not exist");
@@ -63,7 +83,7 @@ public class ShipmentController : ControllerBase
         return BadRequest("Not authorised");
       }
 
-      ShipmentService.AddParcelBagToShipment(shipment, bag);
+      _shipmentService.AddParcelBagToShipment(shipment, bag);
 
       return Ok();
     }
@@ -79,7 +99,7 @@ public class ShipmentController : ControllerBase
   {
     try
     {
-      var shipment = ShipmentService.Get(id);
+      var shipment = _shipmentService.Get(id);
       if (shipment == null)
       {
         return NotFound("Shipment with this ID does not exist");
@@ -90,7 +110,7 @@ public class ShipmentController : ControllerBase
         return BadRequest("Not authorised");
       }
 
-      ShipmentService.AddLetterBagToShipment(shipment, bag);
+      _shipmentService.AddLetterBagToShipment(shipment, bag);
 
       return Ok();
 
@@ -107,7 +127,7 @@ public class ShipmentController : ControllerBase
   {
     try
     {
-      var shipment = ShipmentService.Get(id);
+      var shipment = _shipmentService.Get(id);
       if (shipment == null)
       {
         return NotFound();
@@ -118,7 +138,7 @@ public class ShipmentController : ControllerBase
         return BadRequest();
       }
 
-      ShipmentService.FinaliseShipment(shipment);
+      _shipmentService.FinaliseShipment(shipment);
 
       return Ok();
     }

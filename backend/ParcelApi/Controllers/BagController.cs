@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using ParcelApi.Models.Bags;
 
-
-
 namespace ParcelApi.Controllers;
 
 [ApiController]
@@ -13,15 +11,26 @@ namespace ParcelApi.Controllers;
 public class BagController : ControllerBase
 {
 
-  public BagController()
+  protected readonly BagService _bagService;
+
+  public BagController(BagService bagService)
   {
+    _bagService = bagService;
   }
 
   [HttpGet]
   public ActionResult<List<Bag>> GetAllBags()
   {
-    var bags = BagService.GetAllBags();
-    return bags;
+    try
+    {
+      var bags = _bagService.GetAllBags();
+      return bags;
+    }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to get bags - Error: {ex.Message}");
+    }
+
   }
 
 

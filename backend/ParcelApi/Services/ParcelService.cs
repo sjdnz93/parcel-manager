@@ -1,41 +1,79 @@
+using Microsoft.EntityFrameworkCore;
+using ParcelApi.Data;
 using ParcelApi.Helpers;
 using ParcelApi.Models;
 
 namespace ParcelApi.Services;
 
-public static class ParcelService
+public class ParcelService
 {
-  public static List<Parcel> Parcels { get; }
+  //public  List<Parcel> Parcels { get; }
 
-  static ParcelService()
+  private readonly ParcelManagerContext _context;
+
+  public ParcelService(ParcelManagerContext context)
   {
-    Parcels = new List<Parcel>();
+    _context = context;
+    //Parcels = new List<Parcel>();
   }
 
-  public static List<Parcel> GetAll() => Parcels;
-
-  public static Parcel? Get(string id) => Parcels.FirstOrDefault(p => p.ParcelId == id);
-
-  public static void Add(Parcel parcel)
+  public List<Parcel> GetAll() // => Parcels;
   {
-    var parcelList = GetAll();
-    while (true)
+    try
     {
-      parcel.ParcelId = IdNumberHelpers.GenerateParcelId();
-      if (!parcelList.Any(x => x.ParcelId == parcel.ParcelId))
-      {
-        Parcels.Add(parcel);
-        break;
-      }
+      return _context.Parcels.AsNoTracking().ToList();
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to get parcels - Error: {ex.Message}");
+      throw;
     }
   }
 
-  public static void Delete(string id)
+  public Parcel? Get(string id) // => Parcels.FirstOrDefault(p => p.ParcelId == id);
   {
-    var parcel = Get(id);
-    if (parcel == null) throw new Exception("Parcel with this ID does not exist in system");
-    Parcels.Remove(parcel);
+    try
+    {
+      return _context.Parcels.AsNoTracking().FirstOrDefault(p => p.ParcelId == id);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to get parcel - Error: {ex.Message}");
+      throw;
+    }
   }
+
+  public void Add(Parcel parcel)
+  {
+    try
+    {
+      var parcelList = GetAll();
+      while (true)
+      {
+        parcel.ParcelId = IdNumberHelpers.GenerateParcelId();
+        if (!parcelList.Any(x => x.ParcelId == parcel.ParcelId))
+        {
+          _context.Parcels.Add(parcel);
+          _context.SaveChanges();
+          //Parcels.Add(parcel);
+          break;
+        }
+      }
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to add parcel - Error: {ex.Message}");
+      throw;
+    }
+
+  }
+
+  // public void Delete(string id)
+  // {
+  //   var parcel = Get(id);
+  //   if (parcel == null) throw new Exception("Parcel with this ID does not exist in system");
+  //   Parcels.Remove(parcel);
+  // }
 
 }
 

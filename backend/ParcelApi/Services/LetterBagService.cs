@@ -1,18 +1,23 @@
-﻿using ParcelApi.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
+using ParcelApi.Data;
+using ParcelApi.Helpers;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
 
 namespace ParcelApi.Services;
 
-public class LetterBagService
+public class LetterBagService : BagService
 {
+  public LetterBagService(ParcelManagerContext context) : base(context)
+  {
+  }
 
-  public static void AddLetterBag(LetterBag bag)
+  public void AddLetterBag(LetterBag bag)
   {
 
     try
     {
-      var bagListFromDb = BagService.GetAllBags();
+      var bagListFromDb = _context.Bags.AsNoTracking().ToList();
 
       while (true)
       {
@@ -24,7 +29,9 @@ public class LetterBagService
         bag.LetterCount = 0;
         if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
         {
-          BagService.LetterBags.Add(bag);
+          //maybe i need to also add to Bags table?
+          _context.LetterBags.Add(bag);
+          _context.SaveChanges();
           break;
         }
       }
@@ -37,7 +44,7 @@ public class LetterBagService
 
   }
 
-  public static void AddLettersToBag(LetterBag bag, int letterCount, decimal weight, decimal price)
+  public void AddLettersToBag(LetterBag bag, int letterCount, decimal weight, decimal price)
   {
     try
     {
@@ -51,6 +58,9 @@ public class LetterBagService
         bag.LetterCount += letterCount;
         bag.Weight += weight;
         bag.Price += price;
+
+        _context.SaveChanges();
+        
       }
       else throw new Exception("Price, weight and letter count must be greater than 0");
     }

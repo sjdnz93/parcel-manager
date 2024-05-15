@@ -1,15 +1,21 @@
-﻿using ParcelApi.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
+using ParcelApi.Data;
+using ParcelApi.Helpers;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
 using ParcelApi.Services;
 
 namespace ParcelApi.Services;
 
-public class ParcelBagService
+public class ParcelBagService : BagService
 {
-  public static void AddParcelBag(ParcelBag bag)
+  public ParcelBagService(ParcelManagerContext context) : base(context)
   {
-    var bagListFromDb = BagService.GetAllBags();
+  }
+
+  public void AddParcelBag(ParcelBag bag)
+  {
+    var bagListFromDb = _context.Bags.AsNoTracking().ToList();
 
     while (true)
     {
@@ -19,13 +25,14 @@ public class ParcelBagService
       bag.IsFinalised = false;
       if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
       {
-        BagService.ParcelBags.Add(bag);
+        _context.ParcelBags.Add(bag);
+        _context.SaveChanges();
         break;
       }
     }
   }
 
-  public static void AddParcelToBag(ParcelBag bag, Parcel parcel)
+  public void AddParcelToBag(ParcelBag bag, Parcel parcel)
   {
     try
     {
@@ -34,10 +41,13 @@ public class ParcelBagService
         if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add parcels to bags in this shipment.");
 
         if (!LocationHelpers.DoesBagDestinationMatchParcelDestination(bag.DestinationCountry, parcel.DestinationCountry)) throw new Exception($"This bag is bound for {bag.DestinationCountry}. You cannot add a parcel to {parcel.DestinationCountry} to this bag.");
-        
+
         bag.Parcels ??= new List<Parcel>();
-        ParcelService.Add(parcel);
+        ParcelService parcelService = new ParcelService(_context);
+        parcelService.Add(parcel);
         bag.Parcels.Add(parcel);
+
+        _context.SaveChanges();
       }
     }
     catch (Exception ex)

@@ -6,14 +6,28 @@ namespace ParcelApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class LetterBagController : ControllerBase
+public class LetterBagController : BagController
 {
+
+  private readonly LetterBagService _letterBagService;
+  public LetterBagController(BagService bagService, LetterBagService letterBagService) : base(bagService)
+  {
+    _letterBagService = letterBagService;
+  }
 
   [HttpGet]
   public ActionResult<List<LetterBag>> GetAllLetterBags()
   {
-    var bags = BagService.GetAllLetterBags();
-    return bags;
+    try
+    {
+      var bags = _bagService.GetAllLetterBags();
+      return bags;
+    }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to get letter bags - Error: {ex.Message}");
+    }
+
   }
 
   [HttpPut("{id}/add-letters")]
@@ -21,7 +35,7 @@ public class LetterBagController : ControllerBase
   {
     try
     {
-      var bag = BagService.GetLetterBagById(id);
+      var bag = _bagService.GetLetterBagById(id);
       if (bag == null)
       {
         return NotFound("Bag with this ID does not exist in system");
@@ -32,7 +46,7 @@ public class LetterBagController : ControllerBase
         return BadRequest("Unauthorised");
       }
 
-      LetterBagService.AddLettersToBag(bag, letterCount, weight, price);
+      _letterBagService.AddLettersToBag(bag, letterCount, weight, price);
       return Ok();
 
     }

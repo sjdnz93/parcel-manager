@@ -1,4 +1,6 @@
-﻿using ParcelApi.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
+using ParcelApi.Data;
+using ParcelApi.Helpers;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
 
@@ -6,34 +8,92 @@ namespace ParcelApi.Services;
 
 public class BagService
 {
-  public static List<ParcelBag> ParcelBags { get; }
-  public static List<LetterBag> LetterBags { get; }
+  // public List<ParcelBag> ParcelBags { get; }
+  // public List<LetterBag> LetterBags { get; }
 
-  static BagService()
+  protected readonly ParcelManagerContext _context;
+
+  public BagService(ParcelManagerContext context)
   {
-    ParcelBags = new List<ParcelBag>();
 
-    LetterBags = new List<LetterBag>();
+    _context = context;
+    // ParcelBags = new List<ParcelBag>();
+
+    // LetterBags = new List<LetterBag>();
   }
 
-  public static List<ParcelBag> GetAllParcelBags() => ParcelBags;
-
-  public static ParcelBag? GetParcelBagById(string id) => ParcelBags.FirstOrDefault(b => b.BagId == id);
-
-  public static List<LetterBag> GetAllLetterBags() => LetterBags;
-
-  public static LetterBag? GetLetterBagById(string id) => LetterBags.FirstOrDefault(b => b.BagId == id);
-
-
-  public static List<Bag> GetAllBags()
+  public List<ParcelBag> GetAllParcelBags()
   {
-    var parcelBags = GetAllParcelBags();
-    var letterBags = GetAllLetterBags();
+    try
+    {
+      return _context.ParcelBags.AsNoTracking().ToList();
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to get parcel bags - Error: {ex.Message}");
+      throw;
+    }
+  } 
 
-    var bags = new List<Bag>();
-    bags.AddRange(parcelBags);
-    bags.AddRange(letterBags);
-    return bags;
+  public ParcelBag? GetParcelBagById(string id)
+  {
+    try
+    {
+      return _context.ParcelBags.AsNoTracking().FirstOrDefault(b => b.BagId == id);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to get parcel bag - Error: {ex.Message}");
+      throw;
+    }
+  }
+
+  public List<LetterBag> GetAllLetterBags()
+  {
+    try
+    {
+      return _context.LetterBags.AsNoTracking().ToList();
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to get letter bags - Error: {ex.Message}");
+      throw;
+    }
+  }
+
+  public LetterBag? GetLetterBagById(string id)
+  {
+    try
+    {
+      return _context.LetterBags.AsNoTracking().FirstOrDefault(b => b.BagId == id);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to get letter bag - Error: {ex.Message}");
+      throw;
+    }
+  }
+
+  public List<Bag> GetAllBags()
+  {
+
+    try
+    {
+      return _context.Bags.AsNoTracking().ToList();
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to get bags - Error: {ex.Message}");
+      throw;
+    }
+
+    // var parcelBags = GetAllParcelBags();
+    // var letterBags = GetAllLetterBags();
+
+    // var bags = new List<Bag>();
+    // bags.AddRange(parcelBags);
+    // bags.AddRange(letterBags);
+    // return bags;
   }
 
 }

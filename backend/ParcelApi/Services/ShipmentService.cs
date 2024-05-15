@@ -1,25 +1,40 @@
-﻿using ParcelApi.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
+using ParcelApi.Data;
+using ParcelApi.Helpers;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
 
 namespace ParcelApi.Services;
 
-public static class ShipmentService
+public class ShipmentService
 {
-  public static List<Shipment> Shipments { get; }
+  //public List<Shipment> Shipments { get; }
+  private readonly ParcelManagerContext _context;
 
-  static ShipmentService()
+  public ShipmentService(ParcelManagerContext context)
   {
-    Shipments = new List<Shipment>();
+    _context = context;
+    //Shipments = new List<Shipment>();
   }
 
-  public static List<Shipment> GetAll() => Shipments;
-
-  public static Shipment? Get(string id)
+  public List<Shipment> GetAll() //=> Shipments;
   {
     try
     {
-      return Shipments.FirstOrDefault(s => s.ShipmentId == id);
+      return _context.Shipments.AsNoTracking().ToList();
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Failed to get shipments - Error: {ex.Message}");
+      throw;
+    }
+  }
+
+  public Shipment? Get(string id)
+  {
+    try
+    {
+      return _context.Shipments.FirstOrDefault(s => s.ShipmentId == id);
     }
     catch (Exception ex)
     {
@@ -29,7 +44,7 @@ public static class ShipmentService
 
   }
 
-  public static void Add(Shipment shipment)
+  public void Add(Shipment shipment)
   {
     try
     {
@@ -46,7 +61,8 @@ public static class ShipmentService
         {
           try
           {
-            Shipments.Add(shipment);
+            _context.Shipments.Add(shipment);
+            _context.SaveChanges();
             break;
           }
           catch (Exception ex)
@@ -65,7 +81,7 @@ public static class ShipmentService
 
   }
 
-  public static void AddParcelBagToShipment(Shipment shipment, ParcelBag bag)
+  public void AddParcelBagToShipment(Shipment shipment, ParcelBag bag)
   {
     try
     {
@@ -79,8 +95,11 @@ public static class ShipmentService
         if (!LocationHelpers.DoesShipmentDestinationMatchBagDestination(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
 
         shipment.Bags ??= new List<Bag>();
-        ParcelBagService.AddParcelBag(bag);
+        ParcelBagService parcelBagService = new ParcelBagService(_context);
+        parcelBagService.AddParcelBag(bag);
         shipment.Bags.Add(bag);
+
+        _context.SaveChanges();
       }
       else throw new Exception("Shipment not found");
     }
@@ -92,7 +111,7 @@ public static class ShipmentService
 
   }
 
-  public static void AddLetterBagToShipment(Shipment shipment, LetterBag bag)
+  public void AddLetterBagToShipment(Shipment shipment, LetterBag bag)
   {
     try
     {
@@ -105,8 +124,11 @@ public static class ShipmentService
         if (!LocationHelpers.DoesShipmentDestinationMatchBagDestination(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
 
         shipment.Bags ??= new List<Bag>();
-        LetterBagService.AddLetterBag(bag);
+        LetterBagService letterBagService = new LetterBagService(_context);
+        letterBagService.AddLetterBag(bag);
         shipment.Bags.Add(bag);
+
+        _context.SaveChanges();
       }
       else throw new Exception("Shipment not found");
     }
@@ -119,11 +141,12 @@ public static class ShipmentService
 
   }
 
-  public static void FinaliseShipment(Shipment shipment)
+  public void FinaliseShipment(Shipment shipment)
   {
     try
     {
       var todaysDate = DateTime.Now;
+      BagService bagService = new BagService(_context);
       if (shipment != null)
       {
         if (shipment.IsFinalised) throw new Exception("Shipment has already been finalised");
@@ -137,7 +160,7 @@ public static class ShipmentService
           {
             if (bag.BagType == "Parcel")
             {
-              var populatedParcelBag = BagService.GetParcelBagById(bag.BagId);
+              var populatedParcelBag = bagService.GetParcelBagById(bag.BagId);
               if (populatedParcelBag != null)
               {
                 if (populatedParcelBag.Parcels == null || populatedParcelBag.Parcels.Count == 0) throw new Exception($"Bag ID {bag.BagId} has no parcels. Please fill bag before finalising shipment.");
@@ -145,7 +168,7 @@ public static class ShipmentService
             }
             else if (bag.BagType == "Letter")
             {
-              var populatedLetterBag = BagService.GetLetterBagById(bag.BagId);
+              var populatedLetterBag = bagService.GetLetterBagById(bag.BagId);
               if (populatedLetterBag != null)
               {
                 if (populatedLetterBag.LetterCount == 0) throw new Exception($"Bag ID {bag.BagId} has no letters. Please fill bag before finalising shipment.");
@@ -162,6 +185,8 @@ public static class ShipmentService
         }
 
         shipment.IsFinalised = true;
+
+        _context.SaveChanges();
 
       }
     }
