@@ -8,8 +8,9 @@ public class ParcelBag : Bag
   
   public List<Parcel> Parcels { get; set; }
 
-  public ParcelBag(string bagId, string bagType) : base(bagId, bagType)
+  public ParcelBag() : base()
   {
+    BagType = "Parcel";
     Parcels = new List<Parcel>();
   }
 }

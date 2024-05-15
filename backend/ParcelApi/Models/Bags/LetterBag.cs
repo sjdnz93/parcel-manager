@@ -17,11 +17,12 @@ public class LetterBag : Bag
   [Required]
   public decimal? Price { get; set; }
 
-  public LetterBag(string bagId, string bagType) : base(bagId, bagType)
+  public LetterBag() : base()
   {
-    LetterCount ??= 0;
-    Weight ??= 0;
-    Price ??= 0;
+    BagType = "Letter";
+    LetterCount = 0;
+    Weight = 0;
+    Price = 0;
   }
 
 }

@@ -41,6 +41,7 @@ public static class ShipmentService
         shipment.ShipmentId = IdNumberHelpers.GenerateShipmentId();
         shipment.Bags = new List<Bag>();
         shipment.IsFinalised = false;
+
         if (!shipmentList.Any(x => x.ShipmentId == shipment.ShipmentId))
         {
           try
@@ -70,6 +71,7 @@ public static class ShipmentService
     {
       if (shipment != null)
       {
+
         if (shipment.IsFinalised) throw new Exception("Shipment has already been finalised");
 
         if (LocationHelpers.IsFlightInternal(bag.DestinationCountry, shipment.Airport)) throw new Exception("Bag destination is in the same country as shipment origin airport. Do you really need to make an internal flight to transport this package? Probably not.");

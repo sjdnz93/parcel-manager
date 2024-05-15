@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ParcelApi.Helpers;
 using ParcelApi.Models.Bags;
 
 namespace ParcelApi.Models;
@@ -15,7 +16,6 @@ public class Shipment
 {
 
   [Key]
-  [RegularExpression("^[A-Z0-9]{3}-[A-Z0-9]{6}$", ErrorMessage = "Parcel ID must follow the format XXX-XXXXXX")]
   public string? ShipmentId { get; set; }
 
   [Required(ErrorMessage = "Airport is required")]

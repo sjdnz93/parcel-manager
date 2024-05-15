@@ -45,8 +45,8 @@ public class LetterBagService
       {
         if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add letters to bags in this shipment");
 
-        weight = decimal.Parse(weight.ToString("#.###")); // Maximum of 3 decimal places for weight
-        price = decimal.Parse(price.ToString("#.##"));     // Maximum of 2 decimal places for price
+        weight = decimal.Parse(weight.ToString("#.###"));
+        price = decimal.Parse(price.ToString("#.##"));
 
         bag.LetterCount += letterCount;
         bag.Weight += weight;

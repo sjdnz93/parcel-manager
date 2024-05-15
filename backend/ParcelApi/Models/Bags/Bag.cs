@@ -5,7 +5,6 @@ namespace ParcelApi.Models.Bags;
 public class Bag
 {
   [Key]
-  [MaxLength(15, ErrorMessage = "BagId must be 15 characters or less")]
   public string? BagId { get; set; }
 
   public string? BagType { get; set; }
@@ -16,12 +15,11 @@ public class Bag
   [RegularExpression("^(EE|LV|FI)$", ErrorMessage = "Country must be 'EE', 'LV', or 'FI'")]
   public required string DestinationCountry { get; set; }
 
-  public Bag(string bagId, string bagType) 
+  public Bag()
   {
-    BagId = bagId;
-    BagType = bagType;
     IsFinalised = false;
   }
+
 }
 
 // TODO double check all data types and validations
