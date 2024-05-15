@@ -17,7 +17,7 @@ public class LetterBagService : BagService
 
     try
     {
-      var bagListFromDb = _context.Bags.AsNoTracking().ToList();
+      var bagListFromDb = _context.Bags.ToList();
 
       while (true)
       {

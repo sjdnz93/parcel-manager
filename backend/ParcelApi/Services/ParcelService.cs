@@ -21,7 +21,7 @@ public class ParcelService
   {
     try
     {
-      return _context.Parcels.AsNoTracking().ToList();
+      return _context.Parcels.ToList();
     }
     catch (Exception ex)
     {
@@ -34,7 +34,7 @@ public class ParcelService
   {
     try
     {
-      return _context.Parcels.AsNoTracking().FirstOrDefault(p => p.ParcelId == id);
+      return _context.Parcels.FirstOrDefault(p => p.ParcelId == id);
     }
     catch (Exception ex)
     {

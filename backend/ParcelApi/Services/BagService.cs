@@ -26,20 +26,20 @@ public class BagService
   {
     try
     {
-      return _context.ParcelBags.AsNoTracking().ToList();
+      return _context.ParcelBags.Include(p => p.Parcels).ToList();
     }
     catch (Exception ex)
     {
       Console.WriteLine($"Failed to get parcel bags - Error: {ex.Message}");
       throw;
     }
-  } 
+  }
 
   public ParcelBag? GetParcelBagById(string id)
   {
     try
     {
-      return _context.ParcelBags.AsNoTracking().FirstOrDefault(b => b.BagId == id);
+      return _context.ParcelBags.Include(p => p.Parcels).FirstOrDefault(b => b.BagId == id);
     }
     catch (Exception ex)
     {
@@ -52,7 +52,7 @@ public class BagService
   {
     try
     {
-      return _context.LetterBags.AsNoTracking().ToList();
+      return _context.LetterBags.ToList();
     }
     catch (Exception ex)
     {
@@ -65,7 +65,7 @@ public class BagService
   {
     try
     {
-      return _context.LetterBags.AsNoTracking().FirstOrDefault(b => b.BagId == id);
+      return _context.LetterBags.FirstOrDefault(b => b.BagId == id);
     }
     catch (Exception ex)
     {
@@ -79,7 +79,7 @@ public class BagService
 
     try
     {
-      return _context.Bags.AsNoTracking().ToList();
+      return _context.Bags.ToList();
     }
     catch (Exception ex)
     {

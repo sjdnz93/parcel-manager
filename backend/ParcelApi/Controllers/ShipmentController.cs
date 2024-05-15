@@ -83,7 +83,7 @@ public class ShipmentController : ControllerBase
         return BadRequest("Not authorised");
       }
 
-      _shipmentService.AddParcelBagToShipment(shipment, bag);
+      _shipmentService.AddParcelBagToShipment(id, bag);
 
       return Ok();
     }

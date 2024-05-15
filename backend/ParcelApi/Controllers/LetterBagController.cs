@@ -15,7 +15,7 @@ public class LetterBagController : BagController
     _letterBagService = letterBagService;
   }
 
-  [HttpGet]
+  [HttpGet("letter-bags")]
   public ActionResult<List<LetterBag>> GetAllLetterBags()
   {
     try
@@ -30,6 +30,25 @@ public class LetterBagController : BagController
 
   }
 
+  [HttpGet("{id}")]
+  public ActionResult<LetterBag> GetLetterBagById(string id)
+  {
+    try
+    {
+      var bag = _bagService.GetLetterBagById(id);
+      if (bag == null)
+      {
+        return NotFound("Letter bag with this ID does not exist in system");
+      }
+      return bag;
+    }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to get letter bag - Error: {ex.Message}");
+    }
+  }
+  
+
   [HttpPut("{id}/add-letters")]
   public IActionResult Update(string id, int letterCount, decimal weight, decimal price)
   {
@@ -38,7 +57,7 @@ public class LetterBagController : BagController
       var bag = _bagService.GetLetterBagById(id);
       if (bag == null)
       {
-        return NotFound("Bag with this ID does not exist in system");
+        return NotFound("Letter bag with this ID does not exist in system");
       }
 
       if (bag.BagId != id)

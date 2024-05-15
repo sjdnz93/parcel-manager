@@ -15,7 +15,7 @@ public class ParcelBagService : BagService
 
   public void AddParcelBag(ParcelBag bag)
   {
-    var bagListFromDb = _context.Bags.AsNoTracking().ToList();
+    var bagListFromDb = _context.Bags.ToList();
 
     while (true)
     {
@@ -32,20 +32,25 @@ public class ParcelBagService : BagService
     }
   }
 
-  public void AddParcelToBag(ParcelBag bag, Parcel parcel)
+  public void AddParcelToBag(string id, Parcel parcel)
   {
     try
     {
+      var bag = _context.ParcelBags.Include(p => p.Parcels).FirstOrDefault(b => b.BagId == id);
       if (bag != null && parcel != null)
       {
         if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add parcels to bags in this shipment.");
 
         if (!LocationHelpers.DoesBagDestinationMatchParcelDestination(bag.DestinationCountry, parcel.DestinationCountry)) throw new Exception($"This bag is bound for {bag.DestinationCountry}. You cannot add a parcel to {parcel.DestinationCountry} to this bag.");
 
-        bag.Parcels ??= new List<Parcel>();
+        Console.WriteLine("Parcel bag count pre update => " + bag.Parcels.Count);
+
+        //bag.Parcels ??= new List<Parcel>();
         ParcelService parcelService = new ParcelService(_context);
         parcelService.Add(parcel);
         bag.Parcels.Add(parcel);
+
+        Console.WriteLine("Parcel bag count post update => " + bag.Parcels.Count);
 
         _context.SaveChanges();
       }

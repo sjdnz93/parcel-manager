@@ -15,12 +15,16 @@ public class ParcelBagController : BagController
     _parcelBagService = parcelBagService;
   }
 
-  [HttpGet]
+  [HttpGet("parcel-bags")]
   public ActionResult<List<ParcelBag>> GetAllParcelBags()
   {
     try
     {
       var bags = _bagService.GetAllParcelBags();
+      if (bags == null)
+      {
+        return NotFound("No parcel bags exist in the system");
+      }
       return bags;
     }
     catch (Exception ex)
@@ -38,7 +42,7 @@ public class ParcelBagController : BagController
       var bag = _bagService.GetParcelBagById(id);
       if (bag == null)
       {
-        return NotFound();
+        return NotFound("Parcel bag with this ID does not exist in the system");
       }
       return bag;
     }
@@ -57,7 +61,7 @@ public class ParcelBagController : BagController
       var bag = _bagService.GetParcelBagById(id);
       if (bag == null)
       {
-        return NotFound("Bag with this ID does not exist in system");
+        return NotFound("Parcel bag with this ID does not exist in system");
       }
 
       if (bag.BagId != id)
@@ -65,7 +69,7 @@ public class ParcelBagController : BagController
         return BadRequest("Unauthorised");
       }
 
-      _parcelBagService.AddParcelToBag(bag, parcel);
+      _parcelBagService.AddParcelToBag(id, parcel);
       return Ok();
     }
     catch (Exception ex)

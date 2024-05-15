@@ -21,7 +21,7 @@ public class ShipmentService
   {
     try
     {
-      return _context.Shipments.AsNoTracking().ToList();
+      return _context.Shipments.Include(s => s.Bags).ToList();
     }
     catch (Exception ex)
     {
@@ -34,7 +34,8 @@ public class ShipmentService
   {
     try
     {
-      return _context.Shipments.FirstOrDefault(s => s.ShipmentId == id);
+      return _context.Shipments.Include(s => s.Bags)
+                               .FirstOrDefault(s => s.ShipmentId == id);
     }
     catch (Exception ex)
     {
@@ -81,10 +82,13 @@ public class ShipmentService
 
   }
 
-  public void AddParcelBagToShipment(Shipment shipment, ParcelBag bag)
+  public void AddParcelBagToShipment(string id, ParcelBag bag)
   {
     try
     {
+      var shipment = _context.Shipments
+                             .Include(s => s.Bags)
+                             .FirstOrDefault(s => s.ShipmentId == id);
       if (shipment != null)
       {
 
@@ -94,12 +98,22 @@ public class ShipmentService
 
         if (!LocationHelpers.DoesShipmentDestinationMatchBagDestination(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
 
-        shipment.Bags ??= new List<Bag>();
+        Console.WriteLine("Shipment bags pre update => " + shipment.Bags.Count);
+
+        //shipment.Bags ??= new List<Bag>();
         ParcelBagService parcelBagService = new ParcelBagService(_context);
         parcelBagService.AddParcelBag(bag);
+        
+        
+
         shipment.Bags.Add(bag);
 
+        Console.WriteLine("Shipment bags post update => " + shipment.Bags.Count);
+
+
+
         _context.SaveChanges();
+
       }
       else throw new Exception("Shipment not found");
     }
