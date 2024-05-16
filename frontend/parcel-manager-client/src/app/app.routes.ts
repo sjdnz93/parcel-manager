@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { ShipmentDetailsComponent } from './shipment-details/shipment-details.component';
+
 
 export const routes: Routes = [
   {
@@ -8,10 +10,10 @@ export const routes: Routes = [
     title: 'Home Page'
   },
 
-  // {
-  //   path:'shipments/:id',
-  //   component: ShipmentDetailsComponent,
-  //   title: 'Shipment Details'
-  // }
+  {
+    path:'shipment/:id',
+    component: ShipmentDetailsComponent,
+    title: 'Shipment Details'
+  }
 
 ];

@@ -1,1 +1,9 @@
-<p>home works!</p>
+<section>
+  <h2>Your Shipments:</h2>
+</section>
+
+<section class="shipment-results">  
+  <app-shipment-results *ngFor="let shipmentResult of shipmentList" [shipment]="shipmentResult"></app-shipment-results>
+</section>
+
+
