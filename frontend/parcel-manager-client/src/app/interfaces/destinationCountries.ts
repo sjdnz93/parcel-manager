@@ -1,0 +1,1 @@
+export type DestinationCountry = "EE" | "LV" | "FI";

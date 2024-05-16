@@ -18,6 +18,8 @@ builder.Services.AddScoped<LetterBagService>();
 builder.Services.AddScoped<ParcelService>();
 builder.Services.AddScoped<ShipmentService>();
 
+builder.Services.AddCors(); // Add this line to register CORS services
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -25,6 +27,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(builder =>
+{
+  builder.WithOrigins("http://localhost:4200") // Adjust this to your Client app's URL
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+});
 
 app.UseHttpsRedirection();
 
