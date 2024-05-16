@@ -22,7 +22,7 @@ node_modules/
 packages/
 
 # DB migrations
-/Migrations
+*ParcelApi/Migrations
 
 # DB files
 *.db

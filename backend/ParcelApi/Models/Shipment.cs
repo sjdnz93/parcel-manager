@@ -7,9 +7,9 @@ namespace ParcelApi.Models;
 
 public enum AirportCodes
 {
-  TLL,
-  HEL,
-  RIX,
+  TLL = 0,
+  HEL = 1,
+  RIX = 2,
 }
 
 public class Shipment
@@ -21,6 +21,8 @@ public class Shipment
   [Required(ErrorMessage = "Airport is required")]
   [EnumDataType(typeof(AirportCodes), ErrorMessage = "Invalid Airport code")]
   public required AirportCodes Airport { get; set; }
+
+  public string AirportCodeString => Airport.ToString();
 
   [Required(ErrorMessage = "Destination country is required")]
   [RegularExpression("^(EE|LV|FI)$", ErrorMessage = "Country must be 'EE', 'LV', or 'FI'")]

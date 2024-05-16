@@ -14,15 +14,11 @@ public class LetterBag : Bag
   [Required]
   public decimal? Weight { get; set; }
 
-  [Required]
-  public decimal? Price { get; set; }
-
   public LetterBag() : base()
   {
     BagType = "Letter";
     LetterCount = 0;
     Weight = 0;
-    Price = 0;
   }
 
 }

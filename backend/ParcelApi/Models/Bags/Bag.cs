@@ -15,11 +15,19 @@ public class Bag
   [RegularExpression("^(EE|LV|FI)$", ErrorMessage = "Country must be 'EE', 'LV', or 'FI'")]
   public required string DestinationCountry { get; set; }
 
+  public int ItemCount { get; set; }
+
+  public decimal Price { get; set; }
+
   public Bag()
   {
+    ItemCount = 0;
+    Price = 0;
     IsFinalised = false;
   }
 
 }
+
+// TODO add field to get total price of bags
 
 // TODO double check all data types and validations
