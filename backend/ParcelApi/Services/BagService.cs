@@ -85,4 +85,4 @@ public class BagService
 
 }
 
-// TODO add DELETE controller
+// TODO add DELETE methods
