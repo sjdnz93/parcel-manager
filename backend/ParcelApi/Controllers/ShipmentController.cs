@@ -57,7 +57,7 @@ public class ShipmentController : ControllerBase
       {
         return BadRequest("Shipment cannot be null");
       }
-      _shipmentService.Add(shipment);
+      _shipmentService.AddShipment(shipment);
       return CreatedAtAction(nameof(Get), new { id = shipment.ShipmentId }, shipment);
     }
     catch (Exception ex)
@@ -151,3 +151,5 @@ public class ShipmentController : ControllerBase
 
 
 }
+
+// TODO add PUT and DELETE controllers

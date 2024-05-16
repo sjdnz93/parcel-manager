@@ -8,16 +8,14 @@ namespace ParcelApi.Services;
 
 public class ShipmentService
 {
-  //public List<Shipment> Shipments { get; }
   private readonly ParcelManagerContext _context;
 
   public ShipmentService(ParcelManagerContext context)
   {
     _context = context;
-    //Shipments = new List<Shipment>();
   }
 
-  public List<Shipment> GetAll() //=> Shipments;
+  public List<Shipment> GetAll()
   {
     try
     {
@@ -45,7 +43,7 @@ public class ShipmentService
 
   }
 
-  public void Add(Shipment shipment)
+  public void AddShipment(Shipment shipment)
   {
     try
     {
@@ -53,6 +51,8 @@ public class ShipmentService
       while (true)
       {
         if (LocationHelpers.IsFlightInternal(shipment.DestinationCountry, shipment.Airport)) throw new Exception("Shipment destination is in the same country as shipment origin airport. Do you really need to make an internal flight to transport this package? Probably not.");
+
+        if(DateHelpers.IsDateInPast(shipment.FlightDate)) throw new Exception("Shipment flight date is in the past. Please update.");
 
         shipment.ShipmentId = IdNumberHelpers.GenerateShipmentId();
         shipment.Bags = new List<Bag>();
@@ -98,19 +98,10 @@ public class ShipmentService
 
         if (!LocationHelpers.DoesShipmentDestinationMatchBagDestination(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
 
-        Console.WriteLine("Shipment bags pre update => " + shipment.Bags.Count);
-
-        //shipment.Bags ??= new List<Bag>();
         ParcelBagService parcelBagService = new ParcelBagService(_context);
         parcelBagService.AddParcelBag(bag);
         
-        
-
         shipment.Bags.Add(bag);
-
-        Console.WriteLine("Shipment bags post update => " + shipment.Bags.Count);
-
-
 
         _context.SaveChanges();
 
@@ -215,3 +206,5 @@ public class ShipmentService
 
 
 }
+
+// TODO add PUT and DELETE methods

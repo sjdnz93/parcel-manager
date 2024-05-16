@@ -80,10 +80,3 @@ public class ParcelBagController : BagController
   }
 
 }
-
-// [HttpPost]
-// public ActionResult<ParcelBag> CreateParcelBag([FromBody] ParcelBag bag)
-// {
-//   ParcelBagService.AddParcelBag(bag);
-//   return bag;
-// }

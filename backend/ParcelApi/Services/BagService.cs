@@ -8,8 +8,6 @@ namespace ParcelApi.Services;
 
 public class BagService
 {
-  // public List<ParcelBag> ParcelBags { get; }
-  // public List<LetterBag> LetterBags { get; }
 
   protected readonly ParcelManagerContext _context;
 
@@ -17,9 +15,6 @@ public class BagService
   {
 
     _context = context;
-    // ParcelBags = new List<ParcelBag>();
-
-    // LetterBags = new List<LetterBag>();
   }
 
   public List<ParcelBag> GetAllParcelBags()
@@ -86,14 +81,8 @@ public class BagService
       Console.WriteLine($"Failed to get bags - Error: {ex.Message}");
       throw;
     }
-
-    // var parcelBags = GetAllParcelBags();
-    // var letterBags = GetAllLetterBags();
-
-    // var bags = new List<Bag>();
-    // bags.AddRange(parcelBags);
-    // bags.AddRange(letterBags);
-    // return bags;
   }
 
 }
+
+// TODO add DELETE controller

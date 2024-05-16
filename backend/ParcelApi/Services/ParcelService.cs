@@ -7,17 +7,14 @@ namespace ParcelApi.Services;
 
 public class ParcelService
 {
-  //public  List<Parcel> Parcels { get; }
-
   private readonly ParcelManagerContext _context;
 
   public ParcelService(ParcelManagerContext context)
   {
     _context = context;
-    //Parcels = new List<Parcel>();
   }
 
-  public List<Parcel> GetAll() // => Parcels;
+  public List<Parcel> GetAll()
   {
     try
     {
@@ -30,7 +27,7 @@ public class ParcelService
     }
   }
 
-  public Parcel? Get(string id) // => Parcels.FirstOrDefault(p => p.ParcelId == id);
+  public Parcel? Get(string id)
   {
     try
     {
@@ -55,7 +52,6 @@ public class ParcelService
         {
           _context.Parcels.Add(parcel);
           _context.SaveChanges();
-          //Parcels.Add(parcel);
           break;
         }
       }
@@ -68,15 +64,6 @@ public class ParcelService
 
   }
 
-  // public void Delete(string id)
-  // {
-  //   var parcel = Get(id);
-  //   if (parcel == null) throw new Exception("Parcel with this ID does not exist in system");
-  //   Parcels.Remove(parcel);
-  // }
-
 }
 
-// TODO make sure service methods are case insensitive, particularly for retrieval IDs etc. This should be handled by helper function, however
-// TODO decide if I need PUT method for parcel service
-// TODO update service methods to work with actual DB rather than in-memory list
+// TODO add PUT and DELETE methods

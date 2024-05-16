@@ -44,5 +44,3 @@ public class Shipment
   }
 
 }
-
-// TODO double check all data types and validations

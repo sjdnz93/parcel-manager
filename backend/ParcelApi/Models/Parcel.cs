@@ -25,9 +25,8 @@ public class Parcel
   public required decimal Weight { get; set; }
   
   [Required(ErrorMessage = "Price is required")]
+  [Range(0.01, int.MaxValue, ErrorMessage = "Price must be greater than 0")]
   [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Price must have up to 2 decimal places")]
   public decimal Price { get; set; }
 
 }
-
-// TODO double check all data types and validations

@@ -33,38 +33,6 @@ public class BagController : ControllerBase
 
   }
 
-
-
 }
 
-// [HttpPost]
-// public IActionResult Create(Bag bag)
-// {
-//   BagService.Add(bag);
-//   return CreatedAtAction(nameof(GetAllBags), new { id = bag.BagId }, bag);
-// }
-
-// [HttpGet("{id}")]
-// public ActionResult<Bag> Get(string id)
-// {
-//   var bag = BagService.Get(id);
-//   if (bag == null)
-//   {
-//     return NotFound();
-//   }
-//   return bag;
-// }
-
-
-
-// [HttpDelete("{id}")]
-// public IActionResult Delete(string id)
-// {
-//   var bag = BagService.Get(id);
-//   if (bag == null)
-//   {
-//     return NotFound();
-//   }
-//   BagService.Delete(id);
-//   return NoContent();
-// }
+// TODO add DELETE controller

@@ -43,14 +43,13 @@ public class ParcelBagService : BagService
 
         if (!LocationHelpers.DoesBagDestinationMatchParcelDestination(bag.DestinationCountry, parcel.DestinationCountry)) throw new Exception($"This bag is bound for {bag.DestinationCountry}. You cannot add a parcel to {parcel.DestinationCountry} to this bag.");
 
-        Console.WriteLine("Parcel bag count pre update => " + bag.Parcels.Count);
+        if(parcel.Weight <= 0 || parcel.Price <= 0) throw new Exception("Weight and price must be greater than 0");
 
-        //bag.Parcels ??= new List<Parcel>();
+        if (parcel.RecipientName == "string") throw new Exception("Please input a valid recipient name");
+
         ParcelService parcelService = new ParcelService(_context);
         parcelService.Add(parcel);
         bag.Parcels.Add(parcel);
-
-        Console.WriteLine("Parcel bag count post update => " + bag.Parcels.Count);
 
         _context.SaveChanges();
       }
