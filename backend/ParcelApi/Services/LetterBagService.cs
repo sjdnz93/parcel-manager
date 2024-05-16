@@ -27,6 +27,7 @@ public class LetterBagService : BagService
         bag.Weight = 0;
         bag.Price = 0;
         bag.LetterCount = 0;
+        bag.ItemCount = 0;
         if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
         {
           //maybe i need to also add to Bags table?

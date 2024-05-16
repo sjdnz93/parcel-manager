@@ -26,4 +26,5 @@ packages/
 
 # DB files
 *.db
+*.db*
 
