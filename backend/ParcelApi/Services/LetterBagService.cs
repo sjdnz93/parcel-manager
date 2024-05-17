@@ -59,6 +59,7 @@ public class LetterBagService : BagService
         bag.LetterCount += letterCount;
         bag.Weight += weight;
         bag.Price += price;
+        bag.ItemCount += letterCount;
 
         _context.SaveChanges();
         
