@@ -1,0 +1,17 @@
+<section *ngIf="parcelBag">
+  <h2>Details for {{parcelBag.bagType}} bag: {{parcelBag.bagId}}</h2>
+  <p><strong>Destination:</strong> {{ parcelBag.destinationCountry }}</p>
+  <p><strong>Price:</strong> €{{ parcelBag.price }}</p>
+  <p><strong>Weight:</strong> {{ parcelBag.weight }}kg</p>
+  <p><strong>Parcel count:</strong> {{ parcelBag.itemCount }}</p>
+  <a [routerLink]="['/shipment', shipmentId ]">Back to shipment</a>
+</section>
+
+<section *ngIf="letterBag">
+  <h2>Details for {{letterBag.bagType}} bag: {{letterBag.bagId}}</h2>
+  <p><strong>Destination:</strong>{{ letterBag.destinationCountry }}</p>
+  <p><strong>Price:</strong> €{{ letterBag.price }}</p>
+  <p><strong>Weight:</strong> {{ letterBag.weight }}kg</p>
+  <p><strong>Letter count:</strong> {{ letterBag.itemCount }}</p>
+  <a [routerLink]="['/shipment', shipmentId ]">Back to shipment</a>
+</section>

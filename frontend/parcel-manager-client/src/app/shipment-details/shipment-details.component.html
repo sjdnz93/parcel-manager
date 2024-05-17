@@ -5,10 +5,11 @@
   <p><strong>Flight number:</strong> {{ shipment?.flightNumber }}</p>
   <p><strong>Departing on:</strong> {{ shipment?.flightDate | date: 'medium'}}</p>
   <p><strong>Number of bags:</strong> {{ shipment?.bags?.length }}</p>
+  <p><strong>Is finalised?:</strong> {{ shipment?.isFinalised }}</p>
   
 </section>
 <section>
   <h3>Bag details:</h3>
-  <!-- <app-bag-results-list *ngFor="let bag of shipment?.bags" [bag]="bag"></app-bag-results-list> -->
+  <app-bag-results-list *ngFor="let bag of shipment?.bags" [bag]="bag" [shipmentId]="shipment!.shipmentId"></app-bag-results-list>
 </section>
 

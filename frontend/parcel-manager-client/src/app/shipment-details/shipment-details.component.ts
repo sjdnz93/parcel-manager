@@ -38,26 +38,12 @@ export class ShipmentDetailsComponent {
       next: (data) => {
         this.shipment = data;
         console.log('Shipment: ', data);
-        this.getBagIds(this.shipment);
-        console.log('Bag IDs: ', this.bagIds);
-
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error(error);
         this.errorMessagae = 'Error retrieving shipment: ', error;
       }
     });
-  }
-
-  getBagIds(shipment: Shipment): void {
-    if (shipment) {
-
-      for (let i = 0; i < shipment.bags.length; i++) {
-
-        this.bagIds.push(shipment.bags[i].bagId);
-      }
-    }
-
   }
 
   // TODO: Maybe make a get each individual bag function call

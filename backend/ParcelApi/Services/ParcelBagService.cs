@@ -24,6 +24,7 @@ public class ParcelBagService : BagService
       bag.Parcels = new List<Parcel>();
       bag.IsFinalised = false;
       bag.Price = 0;
+      bag.Weight = 0;
       bag.ItemCount = 0;
       if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
       {
@@ -54,6 +55,7 @@ public class ParcelBagService : BagService
         bag.Parcels.Add(parcel);
         bag.ItemCount++;
         bag.Price += parcel.Price;
+        bag.Weight += parcel.Weight;
 
         _context.SaveChanges();
       }

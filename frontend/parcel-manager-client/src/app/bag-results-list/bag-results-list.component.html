@@ -1,5 +1,8 @@
 <div class="info-container">
-  <p>ID: {{bag.bagId}}</p>
-  <p>Type: {{bag.bagType}}</p>
-  <!-- <p>Price: {{bag.price}}</p> -->
+  <a [routerLink]="['/shipment', shipmentId, 'bag', bag.bagId, { type: bag.bagType}]">
+  <p><strong>ID:</strong> {{bag.bagId}}</p>
+  <p><strong>Type:</strong> {{bag.bagType}}</p>
+  <p><strong>Price:</strong> {{bag.price}}</p>
+  <p><strong>Item count:</strong> {{bag.itemCount}}</p>
+  </a>
 </div>

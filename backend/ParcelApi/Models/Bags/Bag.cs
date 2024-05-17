@@ -19,10 +19,13 @@ public class Bag
 
   public decimal Price { get; set; }
 
+  public decimal? Weight { get; set; }
+
   public Bag()
   {
     ItemCount = 0;
     Price = 0;
+    Weight = 0;
     IsFinalised = false;
   }
 
