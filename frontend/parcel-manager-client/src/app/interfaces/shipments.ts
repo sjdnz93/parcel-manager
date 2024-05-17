@@ -19,3 +19,12 @@ export interface Shipment {
   isFinalised: boolean;
 
 }
+
+export interface ShipmentForm {
+  airport: number;
+  destinationCountry: string;
+  flightNumber: string;
+  flightDate: Date;
+}
+
+ 

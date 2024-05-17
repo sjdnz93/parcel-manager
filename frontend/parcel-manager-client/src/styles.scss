@@ -13,9 +13,9 @@
 }
 
 :root {
-  --telia-purple: rgb(154,25,228);
-  --background-grey: rgb(244,244,249);
-  --border-grey: rgb(239,239,239);
+  --telia-purple: rgb(154, 25, 228);
+  --background-grey: rgb(244, 244, 249);
+  --border-grey: rgb(239, 239, 239);
 }
 
 h1 {
@@ -28,7 +28,7 @@ h1 {
   margin-top: 10px;
   border-radius: 5px;
   max-width: 450px;
-  min-width: 300px;  
+  min-width: 300px;
   text-decoration: none;
   background-color: var(--background-grey);
 }
@@ -38,6 +38,81 @@ h1 {
   color: inherit;
 }
 
-.info-container a:hover  {
+.info-container a:hover {
   color: var(--telia-purple);
+}
+
+.form-container {
+  background-color: var(--background-grey);
+  padding: 15px;
+  border: 1px solid var(--border-grey);
+  border-radius: 5px;
+  max-width: 450px;
+  min-width: 300px;
+  margin: 10px auto;
+
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .select,
+    input,
+    button {
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+
+  // button {
+  //   background-color: var(--telia-purple);
+  //   color: white;
+  //   cursor: pointer;
+  // }
+
+  // button:disabled {
+  //   background-color: #ccc;
+  //   cursor: not-allowed;
+  // }
+
+  .error-message {
+    color: red;
+    margin-top: 5px;
+  }
+
+
+}
+
+}
+
+button {
+  margin: 5px 0;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+button {
+  background-color: var(--telia-purple);
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.results-list {
+  margin-top: 20px;
+}
+
+.cancel-button {
+  background-color: rgb(111, 111, 111);
 }

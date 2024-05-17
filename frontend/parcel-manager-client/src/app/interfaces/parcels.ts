@@ -7,3 +7,10 @@ export interface Parcel {
   weight: number;
   price: number;
 }
+
+export interface ParcelFormSubmit {
+  recipientName: string;
+  destinationCountry: DestinationCountry;
+  weight: number;
+  price: number;
+}

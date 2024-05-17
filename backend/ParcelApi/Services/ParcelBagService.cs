@@ -48,7 +48,7 @@ public class ParcelBagService : BagService
 
         if(parcel.Weight <= 0 || parcel.Price <= 0) throw new Exception("Weight and price must be greater than 0");
 
-        if (parcel.RecipientName == "string") throw new Exception("Please input a valid recipient name");
+        if (parcel.RecipientName == "string" || parcel.RecipientName == "") throw new Exception("Please input a valid recipient name");
 
         ParcelService parcelService = new ParcelService(_context);
         parcelService.Add(parcel);

@@ -50,7 +50,7 @@ public class ShipmentService
       var shipmentList = GetAll();
       while (true)
       {
-        if (LocationHelpers.IsFlightInternal(shipment.DestinationCountry, shipment.Airport)) throw new Exception("Shipment destination is in the same country as shipment origin airport. Do you really need to make an internal flight to transport this package? Probably not.");
+        if (LocationHelpers.IsFlightInternal(shipment.DestinationCountry, shipment.Airport)) throw new Exception("Shipment destination is in the same country as shipment origin airport. Do you really need to make an internal flight? Probably not.");
 
         if(DateHelpers.IsDateInPast(shipment.FlightDate)) throw new Exception("Shipment flight date is in the past. Please update.");
 

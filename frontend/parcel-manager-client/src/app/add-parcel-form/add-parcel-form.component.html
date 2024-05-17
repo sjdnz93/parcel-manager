@@ -1,0 +1,53 @@
+<section class="form-container">
+  <form class="submit-form" [formGroup]="addParcelForm" (ngSubmit)="parcelFormSubmit()">
+
+    <label for="recipientName">Recipient Name</label>
+    <input id="recipientName" type="text" formControlName="recipientName">
+    <div
+    *ngIf="addParcelForm.get('recipientName')?.invalid && (addParcelForm.get('recipientName')?.dirty || addParcelForm.get('recipientName')?.touched)">
+    <div *ngIf="addParcelForm.get('recipientName')?.errors?.['required']">
+      Recipient name is required.
+    </div>
+    <div *ngIf="addParcelForm.get('recipientName')?.errors?.['pattern']">
+      You must enter a valid recipient name.
+    </div>
+  </div>
+
+    <label for="destinationCountry">Destination Country</label>
+    <select id="destinationCountry" formControlName="destinationCountry">
+      <option value="EE">EE</option>
+      <option value="LV">LV</option>
+      <option value="FI">FI</option>
+    </select>
+
+    <label for="weight">Weight</label>
+    <input id="weight" type="number" formControlName="weight">
+    <div
+    *ngIf="addParcelForm.get('weight')?.invalid && (addParcelForm.get('weight')?.dirty || addParcelForm.get('weight')?.touched)">
+    <div *ngIf="addParcelForm.get('weight')?.errors?.['required']">
+      Weight is required.
+    </div>
+    <div *ngIf="addParcelForm.get('weight')?.errors?.['min']">
+      You must enter a valid weight.
+    </div>
+  </div>
+
+    <label for="price">Price</label>
+    <input id="price" type="number" formControlName="price">
+    <div
+    *ngIf="addParcelForm.get('price')?.invalid && (addParcelForm.get('price')?.dirty || addParcelForm.get('price')?.touched)">
+    <div *ngIf="addParcelForm.get('price')?.errors?.['required']">
+      Price is required.
+    </div>
+    <div *ngIf="addParcelForm.get('price')?.errors?.['min']">
+      You must enter a valid price.
+    </div>
+  </div>
+  
+    <button type="submit" [disabled]="addParcelForm.invalid">Add parcel to bag</button>
+    <button class="cancel-button" type='button' [routerLink]="['/shipment', shipmentId, 'bag', bagId]">Go back</button>
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  </form>
+  </section>

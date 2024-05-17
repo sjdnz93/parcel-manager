@@ -1,0 +1,23 @@
+<section class="form-container">
+  <form class="submit-form" [formGroup]="addBagForm" (ngSubmit)="bagFormSubmit()">
+
+    <label for="bagType">Bag Type</label>
+    <select id="bagType" formControlName="bagType">
+      <option value="Parcel">Parcel</option>
+      <option value="Letter">Letter</option>
+    </select>
+
+    <label for="destinationCountry">Destination Country</label>
+    <select id="destinationCountry" formControlName="destinationCountry">
+      <option value="EE">EE</option>
+      <option value="LV">LV</option>
+      <option value="FI">FI</option>
+    </select>
+  
+    <button type="submit" [disabled]="addBagForm.invalid">Add bag to shipment</button>
+    <button class="cancel-button" type='button' [routerLink]="['/shipment', shipmentId]">Go back</button>
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  </form>
+  </section>

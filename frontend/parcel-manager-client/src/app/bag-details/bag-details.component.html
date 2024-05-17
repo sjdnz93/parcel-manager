@@ -4,13 +4,17 @@
   <p><strong>Price:</strong> €{{ parcelBag.price }}</p>
   <p><strong>Weight:</strong> {{ parcelBag.weight }}kg</p>
   <p><strong>Parcel count:</strong> {{ parcelBag.itemCount }}</p>
-  <a [routerLink]="['/shipment', shipmentId ]">Back to shipment</a>
+  <button [routerLink]="['/shipment', shipmentId ]">Back to shipment</button>
+
+  <section class="results-list" *ngIf="parcelBag">
+    <h3>Parcels:</h3>
+    <button [routerLink]="['/shipment', shipmentId, 'parcel-bag', parcelBag.bagId, 'add-parcel']">Add parcels</button>
+    <div *ngIf="!parcelBag.parcels?.length">There are no parcels in this bag</div>
+    <app-parcel-results-list *ngFor="let parcel of parcelBag.parcels" [parcel]="parcel"></app-parcel-results-list>
+  </section>
 </section>
 
-<section *ngIf="parcelBag">
-  <h3>Parcels:</h3>
-  <app-parcel-results-list *ngFor="let parcel of parcelBag.parcels" [parcel]="parcel"></app-parcel-results-list>
-</section>
+
 
 <section *ngIf="letterBag">
   <h2>Details for {{letterBag.bagType}} bag: {{letterBag.bagId}}</h2>
@@ -18,5 +22,6 @@
   <p><strong>Price:</strong> €{{ letterBag.price }}</p>
   <p><strong>Weight:</strong> {{ letterBag.weight }}kg</p>
   <p><strong>Letter count:</strong> {{ letterBag.itemCount }}</p>
-  <a [routerLink]="['/shipment', shipmentId ]">Back to shipment</a>
+  <button>Add letters</button>
+  <button [routerLink]="['/shipment', shipmentId ]">Back to shipment</button>
 </section>

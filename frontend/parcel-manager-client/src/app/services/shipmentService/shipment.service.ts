@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Shipment } from '../../interfaces/shipments';
+import { Shipment, ShipmentForm } from '../../interfaces/shipments';
+import { BagFormSubmit, LetterBag, ParcelBag } from '../../interfaces/bags';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,34 @@ export class ShipmentService {
       catchError(error => {
         console.error('An error occurred:', error);
         return throwError(() => `An error occured retrieving shipment. Error: ${error}`);
+      })
+    );
+  }
+
+  createShipment(request: ShipmentForm): Observable<Shipment> {
+    return this.http.post<Shipment>(`${this.baseUrl}/Shipment`, request).pipe(
+      catchError(error => {
+        console.error('An error occurred:', error.error);
+        return throwError(() => `${error.error}`);
+      })
+    );
+  }
+
+  addParcelBagToShipment(id: string, request: BagFormSubmit): Observable<ParcelBag> {
+    return this.http.put<ParcelBag>(`${this.baseUrl}/Shipment/${id}/add-parcel-bag`, request).pipe(
+      catchError(error => {
+        console.error('An error occurred:', error.error);
+        return throwError(() => `${error.error}`);
+      })
+    );
+  }
+
+
+  addLetterBagToShipment(id: string, request: BagFormSubmit): Observable<LetterBag> {
+    return this.http.put<LetterBag>(`${this.baseUrl}/Shipment/${id}/add-letter-bag`, request).pipe(
+      catchError(error => {
+        console.error('An error occurred:', error.error);
+        return throwError(() => `${error.error}`);
       })
     );
   }

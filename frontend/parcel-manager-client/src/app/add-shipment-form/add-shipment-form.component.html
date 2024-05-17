@@ -1,25 +1,38 @@
-<form [formGroup]="addShipmentForm" (submit)="applyFormSubmit()">
+<section class="form-container">
+<form class="submit-form" [formGroup]="addShipmentForm" (ngSubmit)="shipmentFormSubmit()">
   <label for="airport">Airport</label>
   <select id="airport" formControlName="airport">
-    <option>{{airportCodes[0]}}</option>
-    <option>{{airportCodes[1]}}</option>
-    <option>{{airportCodes[2]}}</option>
+    <option *ngFor="let code of airportCodes">{{code}}</option>
   </select>
 
   <label for="destinationCountry">Destination Country</label>
-  <select>
-    <option>EE</option>
-    <option>LV</option>
-    <option>FI</option>
+  <select id="destinationCountry" formControlName="destinationCountry">
+    <option value="EE">EE</option>
+    <option value="LV">LV</option>
+    <option value="FI">FI</option>
   </select>
 
   <label for="flightNumber">Flight Number</label>
   <input id="flightNumber" type="text" formControlName="flightNumber">
+  <div
+    *ngIf="addShipmentForm.get('flightNumber')?.invalid && (addShipmentForm.get('flightNumber')?.dirty || addShipmentForm.get('flightNumber')?.touched)">
+    <div *ngIf="addShipmentForm.get('flightNumber')?.errors?.['required']">
+      Flight number is required.
+    </div>
+    <div *ngIf="addShipmentForm.get('flightNumber')?.errors?.['pattern']">
+      Flight number must be in the format LLNNNN (e.g., AB1234).
+    </div>
+  </div>
 
   <label for="flightDate">Flight Date</label>
   <input id="flightDate" type="date" formControlName="flightDate">
 
-  <button type="submit" [disabled]="!addShipmentForm.valid">Create shipment</button>
+  <label for="flightTime">Flight Time</label>
+  <input id="flightTime" type="time" formControlName="flightTime">
 
-
+  <button type="submit" [disabled]="addShipmentForm.invalid">Create shipment</button>
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
 </form>
+</section>

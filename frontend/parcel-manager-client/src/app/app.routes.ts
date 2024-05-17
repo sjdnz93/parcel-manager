@@ -3,6 +3,8 @@ import { HomeComponent } from './home/home.component';
 import { ShipmentDetailsComponent } from './shipment-details/shipment-details.component';
 import { BagDetailsComponent } from './bag-details/bag-details.component';
 import { AddShipmentFormComponent } from './add-shipment-form/add-shipment-form.component';
+import { AddBagFormComponent } from './add-bag-form/add-bag-form.component';
+import { AddParcelFormComponent } from './add-parcel-form/add-parcel-form.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +30,18 @@ export const routes: Routes = [
     component: AddShipmentFormComponent,
     title: 'Create Shipment'
 
+  },
+
+  {
+    path: 'shipment/:shipmentId/add-bag',
+    component: AddBagFormComponent,
+    title: 'Create Parcel Bag'
+  },
+
+  {
+    path: 'shipment/:shipmentId/parcel-bag/:bagId/add-parcel',
+    component: AddParcelFormComponent,
+    title: 'Add Parcel'
   }
 
 ];

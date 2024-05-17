@@ -21,3 +21,7 @@ export interface LetterBag extends Bag {
   letterCount: number,
   weight: number,
 }
+
+export interface BagFormSubmit {
+  destinationCountry: DestinationCountry
+}
