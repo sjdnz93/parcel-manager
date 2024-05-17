@@ -1,0 +1,25 @@
+<form [formGroup]="addShipmentForm" (submit)="applyFormSubmit()">
+  <label for="airport">Airport</label>
+  <select id="airport" formControlName="airport">
+    <option>{{airportCodes[0]}}</option>
+    <option>{{airportCodes[1]}}</option>
+    <option>{{airportCodes[2]}}</option>
+  </select>
+
+  <label for="destinationCountry">Destination Country</label>
+  <select>
+    <option>EE</option>
+    <option>LV</option>
+    <option>FI</option>
+  </select>
+
+  <label for="flightNumber">Flight Number</label>
+  <input id="flightNumber" type="text" formControlName="flightNumber">
+
+  <label for="flightDate">Flight Date</label>
+  <input id="flightDate" type="date" formControlName="flightDate">
+
+  <button type="submit" [disabled]="!addShipmentForm.valid">Create shipment</button>
+
+
+</form>
