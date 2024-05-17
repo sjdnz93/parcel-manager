@@ -1,0 +1,12 @@
+<div class="info-container">
+  <a [routerLink]="['/shipment', shipment.shipmentId]" >
+    <h3>
+      ID: {{ shipment.shipmentId }}
+    </h3>
+    <p><strong>Destination:</strong> {{ shipment.destinationCountry }}</p>
+    <p><strong>Airport:</strong> {{ AirportCodes[shipment.airport] }}</p>
+    <p><strong>Flight Number:</strong> {{ shipment.flightNumber }}</p>
+    <p><strong>Departing on:</strong> {{ shipment.flightDate | date: 'medium'}}</p>
+    <p><strong>Number of bags:</strong> {{ shipment.bags.length }}</p>
+  </a>
+</div>

@@ -12,6 +12,32 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+:root {
+  --telia-purple: rgb(154,25,228);
+  --background-grey: rgb(244,244,249);
+  --border-grey: rgb(239,239,239);
+}
+
 h1 {
   font-size: 20px;
+}
+
+.info-container {
+  border: 1px solid var(--border-grey);
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  max-width: 450px;
+  min-width: 300px;  
+  text-decoration: none;
+  background-color: var(--background-grey);
+}
+
+.info-container a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.info-container a:hover  {
+  color: var(--telia-purple);
 }

@@ -1,16 +1,17 @@
 import { DestinationCountry } from "./destinationCountries";
 import { Bag } from "./bags"; 
 
-enum AirportCodes {
-  TLL,
-  HEL,
-  RIX
+export enum AirportCodes {
+  TLL = 0,
+  HEL = 1,
+  RIX = 2
 }
 
 export interface Shipment {
 
   shipmentId: string;
   airport: AirportCodes;
+  airportCodeString: string;
   destinationCountry: DestinationCountry;
   flightNumber: string;
   flightDate: Date;
