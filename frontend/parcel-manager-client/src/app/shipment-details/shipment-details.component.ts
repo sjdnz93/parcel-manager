@@ -5,13 +5,12 @@ import { ShipmentService } from '../services/shipmentService/shipment.service';
 import { Shipment, AirportCodes } from '../interfaces/shipments';
 import { BagResultsListComponent } from '../bag-results-list/bag-results-list.component';
 import { LetterBag, ParcelBag } from '../interfaces/bags';
-
-
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-shipment-details',
   standalone: true,
-  imports: [CommonModule, BagResultsListComponent],
+  imports: [CommonModule, BagResultsListComponent, RouterLink],
   templateUrl: './shipment-details.component.html',
   styleUrl: './shipment-details.component.scss'
 })

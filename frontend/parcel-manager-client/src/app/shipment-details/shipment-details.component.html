@@ -6,6 +6,7 @@
   <p><strong>Departing on:</strong> {{ shipment?.flightDate | date: 'medium'}}</p>
   <p><strong>Number of bags:</strong> {{ shipment?.bags?.length }}</p>
   <p><strong>Is finalised?:</strong> {{ shipment?.isFinalised }}</p>
+  <a [routerLink]="['']">Back to home</a>
   
 </section>
 <section>

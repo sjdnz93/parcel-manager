@@ -7,6 +7,11 @@
   <a [routerLink]="['/shipment', shipmentId ]">Back to shipment</a>
 </section>
 
+<section *ngIf="parcelBag">
+  <h3>Parcels:</h3>
+  <app-parcel-results-list *ngFor="let parcel of parcelBag.parcels" [parcel]="parcel"></app-parcel-results-list>
+</section>
+
 <section *ngIf="letterBag">
   <h2>Details for {{letterBag.bagType}} bag: {{letterBag.bagId}}</h2>
   <p><strong>Destination:</strong>{{ letterBag.destinationCountry }}</p>

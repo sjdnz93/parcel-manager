@@ -5,11 +5,12 @@ import { LetterBag, ParcelBag, Bag } from '../interfaces/bags';
 import { LetterBagService } from '../services/bagService/letter-bag.service';
 import { ParcelBagService } from '../services/bagService/parcel-bag.service';
 import { RouterLink } from '@angular/router';
+import { ParcelResultsListComponent } from '../parcel-results-list/parcel-results-list.component';
 
 @Component({
   selector: 'app-bag-details',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ParcelResultsListComponent],
   templateUrl: './bag-details.component.html',
   styleUrl: './bag-details.component.scss'
 })
