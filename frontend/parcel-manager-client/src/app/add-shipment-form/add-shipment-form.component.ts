@@ -5,13 +5,14 @@ import { AirportCodes, ShipmentForm } from '../interfaces/shipments';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ShipmentService } from '../services/shipmentService/shipment.service';
+import { RouterLink } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-add-shipment-form',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterLink],
   templateUrl: './add-shipment-form.component.html',
   styleUrl: './add-shipment-form.component.scss'
 })
@@ -32,7 +33,7 @@ export class AddShipmentFormComponent {
 
   constructor() {
     this.addShipmentForm = new FormGroup({
-      airport: new FormControl(this.airportCodes[0], [Validators.required, this.airportCodeValidator()]),
+      airport: new FormControl('TLL', [Validators.required, Validators.pattern("^(TLL|HEL|RIX)$")]),
       destinationCountry: new FormControl('LV', [Validators.required, Validators.pattern("^(EE|LV|FI)$")]),
       flightNumber: new FormControl('LL1111', [Validators.required, Validators.pattern("^[A-Z]{2}\\d{4}$")]),
       flightDate: new FormControl(this.todaysDate, [Validators.required, this.datetimeValidator()]),
@@ -48,6 +49,16 @@ export class AddShipmentFormComponent {
       }
       return null;
     };
+  }
+
+  getAirportCode(airport: string): AirportCodes {
+    if (airport === 'TLL') {
+      return AirportCodes.TLL;
+    } else if (airport === 'RIX') {
+      return AirportCodes.RIX;
+    } else {
+      return AirportCodes.HEL;
+    }
   }
 
   datetimeValidator(): ValidatorFn {
@@ -68,7 +79,7 @@ export class AddShipmentFormComponent {
     date.setMinutes(minutes);
 
     const request: ShipmentForm = {
-      airport: Number(this.addShipmentForm.value.airport),
+      airport: Number(this.getAirportCode(this.addShipmentForm.value.airport)),
       destinationCountry: this.addShipmentForm.value.destinationCountry,
       flightNumber: this.addShipmentForm.value.flightNumber,
       flightDate: date

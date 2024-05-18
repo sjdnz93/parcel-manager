@@ -1,9 +1,15 @@
 <main>
   <header>
-    <a routerLink=""><img src="./assets/logo.png" alt="Telia logo" aria-hidden="true"></a>
-    <h1>Parcel Manager</h1>
+    <div class="header-content">
+      <div class="logo-container">
+        <a routerLink=""><img src="./assets/logo.png" alt="Telia logo" aria-hidden="true"></a>
+      </div>
+      <div class="title-container">
+        <a routerLink=""><h1>Parcel Manager</h1></a>
+      </div>
+    </div>
   </header>
-  
+
   <section class="content">
     <router-outlet></router-outlet>
   </section>

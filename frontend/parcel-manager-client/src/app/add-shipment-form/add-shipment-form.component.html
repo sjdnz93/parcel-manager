@@ -2,7 +2,9 @@
 <form class="submit-form" [formGroup]="addShipmentForm" (ngSubmit)="shipmentFormSubmit()">
   <label for="airport">Airport</label>
   <select id="airport" formControlName="airport">
-    <option *ngFor="let code of airportCodes">{{code}}</option>
+    <option value="TLL">TLL</option>
+    <option value="HEL">HEL</option>
+    <option value="RIX">RIX</option>
   </select>
 
   <label for="destinationCountry">Destination Country</label>
@@ -31,6 +33,7 @@
   <input id="flightTime" type="time" formControlName="flightTime">
 
   <button type="submit" [disabled]="addShipmentForm.invalid">Create shipment</button>
+  <button class="cancel-button" type='button' [routerLink]="['/']">Go back</button>
   <div class="error-message" *ngIf="errorMessage">
     {{ errorMessage }}
   </div>

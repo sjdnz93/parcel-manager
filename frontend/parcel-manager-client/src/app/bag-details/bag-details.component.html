@@ -1,27 +1,27 @@
-<section *ngIf="parcelBag">
+<section *ngIf="parcelBag" class="page-content">
   <h2>Details for {{parcelBag.bagType}} bag: {{parcelBag.bagId}}</h2>
   <p><strong>Destination:</strong> {{ parcelBag.destinationCountry }}</p>
   <p><strong>Price:</strong> €{{ parcelBag.price }}</p>
   <p><strong>Weight:</strong> {{ parcelBag.weight }}kg</p>
   <p><strong>Parcel count:</strong> {{ parcelBag.itemCount }}</p>
   <button [routerLink]="['/shipment', shipmentId ]">Back to shipment</button>
+</section>
 
-  <section class="results-list" *ngIf="parcelBag">
-    <h3>Parcels:</h3>
-    <button [routerLink]="['/shipment', shipmentId, 'parcel-bag', parcelBag.bagId, 'add-parcel']">Add parcels</button>
-    <div *ngIf="!parcelBag.parcels?.length">There are no parcels in this bag</div>
-    <app-parcel-results-list *ngFor="let parcel of parcelBag.parcels" [parcel]="parcel"></app-parcel-results-list>
-  </section>
+<section class="results-list" *ngIf="parcelBag">
+  <h3>Parcels:</h3>
+  <button [routerLink]="['/shipment', shipmentId, 'parcel-bag', parcelBag.bagId, 'add-parcel']" [disabled]="parcelBag.isFinalised">Add parcels</button>
+  <div *ngIf="!parcelBag.parcels?.length">There are no parcels in this bag</div>
+  <app-parcel-results-list *ngFor="let parcel of parcelBag.parcels" [parcel]="parcel"></app-parcel-results-list>
 </section>
 
 
 
-<section *ngIf="letterBag">
+<section *ngIf="letterBag" class="page-content">
   <h2>Details for {{letterBag.bagType}} bag: {{letterBag.bagId}}</h2>
   <p><strong>Destination:</strong>{{ letterBag.destinationCountry }}</p>
   <p><strong>Price:</strong> €{{ letterBag.price }}</p>
   <p><strong>Weight:</strong> {{ letterBag.weight }}kg</p>
   <p><strong>Letter count:</strong> {{ letterBag.itemCount }}</p>
-  <button [routerLink]="['/shipment', shipmentId, 'bag', letterBag.bagId, 'add-letters' ]">Add letters</button>
+  <button [routerLink]="['/shipment', shipmentId, 'bag', letterBag.bagId, 'add-letters' ]" [disabled]="letterBag.isFinalised">Add letters</button>
   <button [routerLink]="['/shipment', shipmentId ]">Back to shipment</button>
 </section>

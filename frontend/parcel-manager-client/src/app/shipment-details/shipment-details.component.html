@@ -1,20 +1,28 @@
-<section>
-  <h2>Details for shipment ID: {{shipment?.shipmentId}}</h2>
+<section class="page-content">
+  <h2>Shipment ID: {{shipment?.shipmentId}}</h2>
   <p><strong>Destination country:</strong> {{ shipment?.destinationCountry }}</p>
   <p><strong>Airport:</strong> {{ shipment?.airportCodeString }}</p>
   <p><strong>Flight number:</strong> {{ shipment?.flightNumber }}</p>
   <p><strong>Departing on:</strong> {{ shipment?.flightDate | date: 'medium'}}</p>
   <p><strong>Number of bags:</strong> {{ shipment?.bags?.length }}</p>
-  <p><strong>Is finalised?:</strong> {{ shipment?.isFinalised }}</p>
-  <button class="finalise-button" (click)="finaliseShipment()" [disabled]="shipment?.isFinalised">Finalise Shipment</button>
+  <p><strong>Is finalised?:</strong> {{ shipment?.isFinalised | json | titlecase }}</p>
 
-  <button [routerLink]="['']">Back to home</button>
-  
+  <div class="button-container">
+    <button class="finalise-button" (click)="finaliseShipment()" [disabled]="shipment?.isFinalised">Finalise
+      Shipment</button>
+
+    <button [routerLink]="['']">Back to home</button>
+  </div>
+
 </section>
 <section class="results-list">
   <h3>Bag details:</h3>
-  <button [routerLink]="['/shipment', shipment?.shipmentId, 'add-bag']">Add new bag</button>
-  <app-bag-results-list *ngFor="let bag of shipment?.bags" [bag]="bag" [shipmentId]="shipment!.shipmentId"></app-bag-results-list>
+  <div class="button-container"> 
+    <button [routerLink]="['/shipment', shipment?.shipmentId, 'add-bag']" [disabled]="shipment?.isFinalised">Add new
+      bag</button>
+  </div>
+
+  <app-bag-results-list *ngFor="let bag of shipment?.bags" [bag]="bag"
+    [shipmentId]="shipment!.shipmentId"></app-bag-results-list>
   <div *ngIf="!shipment?.bags?.length">No bags are in this shipment</div>
 </section>
-

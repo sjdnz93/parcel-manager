@@ -1,12 +1,9 @@
-<section>
+<section class="page-content hero">
   <h2>Your Shipments:</h2>
-</section>
-
-<section>
   <button [routerLink]="['/create-shipment']">Create shipment</button>
 </section>
 
-<section class="shipment-results">  
+<section class="results-list">  
   <app-shipment-results *ngFor="let shipmentResult of shipmentList" [shipment]="shipmentResult"></app-shipment-results>
 </section>
 
