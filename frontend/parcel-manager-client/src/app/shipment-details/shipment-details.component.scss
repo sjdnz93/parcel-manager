@@ -1,0 +1,8 @@
+.finalise-button {
+  background-color: green
+}
+
+.finalise-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

@@ -19,7 +19,7 @@ export class ShipmentDetailsComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   shipmentService = inject(ShipmentService);
   shipment: Shipment | undefined;
-  errorMessagae: string = '';
+  errorMessage: string = '';
   AirportCodes: any = AirportCodes;
 
   bagIds: string[] = [];
@@ -40,16 +40,31 @@ export class ShipmentDetailsComponent {
       },
       error: (error: any) => {
         console.error(error);
-        this.errorMessagae = 'Error retrieving shipment: ', error;
+        this.errorMessage = 'Error retrieving shipment: ', error;
       }
     });
   }
 
-  // TODO: Maybe make a get each individual bag function call
-
-
-
-
-
-
+  finaliseShipment() {
+    if (this.shipment?.isFinalised) {
+      window.alert(`Shipment ${this.shipment?.shipmentId} is already finalised.`);
+      return
+    }
+    const result = window.confirm("Are you sure you want to finalise this shipment?");
+    if (result) {
+      console.log("YES")  
+      this.shipmentService.finaliseShipment(this.shipment!.shipmentId).subscribe({
+        next: () => {
+          this.errorMessage = '';
+          window.alert(`Shipment ${this.shipment?.shipmentId} finalised successfully.`);
+          this.getShipmentById(this.shipment!.shipmentId);
+        },
+        error: (error: any) => {
+          console.error('EROR FROM FINALISATION ', error);
+          this.errorMessage = 'Could not finalise shipment: ' + error.toString();
+          window.alert(this.errorMessage);
+        }
+      })
+    }
+  }
 }

@@ -59,4 +59,13 @@ export class ShipmentService {
     );
   }
 
+  finaliseShipment(id: string): Observable<Shipment> {
+    return this.http.put<Shipment>(`${this.baseUrl}/Shipment/${id}/finalise-shipment`, {}).pipe(
+      catchError(error => {
+        console.error('An error occurred:', error.error);
+        return throwError(() => `${error.error}`);
+      })
+    );
+  }
+
 }

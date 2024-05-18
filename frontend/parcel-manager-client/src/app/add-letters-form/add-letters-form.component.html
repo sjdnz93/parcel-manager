@@ -37,7 +37,7 @@
     </div>
   </div>
   
-    <button type="submit" [disabled]="addLettersForm.invalid">Add parcel to bag</button>
+    <button type="submit" [disabled]="addLettersForm.invalid">Add letters to bag</button>
     <button class="cancel-button" type='button' [routerLink]="['/shipment', shipmentId, 'bag', bagId, { type: 'Letter'}]">Go back</button>
     <div class="error-message" *ngIf="errorMessage">
       {{ errorMessage }}
