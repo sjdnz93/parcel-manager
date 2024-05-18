@@ -5,6 +5,7 @@ import { BagDetailsComponent } from './bag-details/bag-details.component';
 import { AddShipmentFormComponent } from './add-shipment-form/add-shipment-form.component';
 import { AddBagFormComponent } from './add-bag-form/add-bag-form.component';
 import { AddParcelFormComponent } from './add-parcel-form/add-parcel-form.component';
+import { AddLettersFormComponent } from './add-letters-form/add-letters-form.component';
 
 export const routes: Routes = [
   {
@@ -42,6 +43,12 @@ export const routes: Routes = [
     path: 'shipment/:shipmentId/parcel-bag/:bagId/add-parcel',
     component: AddParcelFormComponent,
     title: 'Add Parcel'
+  },
+
+  {
+    path: 'shipment/:shipmentId/bag/:bagId/add-letters',
+    component: AddLettersFormComponent,
+    title: 'Add Letters'
   }
 
 ];

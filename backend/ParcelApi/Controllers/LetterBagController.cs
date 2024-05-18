@@ -1,6 +1,8 @@
 ﻿using ParcelApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using ParcelApi.Models.Bags;
+using Microsoft.VisualBasic;
+using ParcelApi.RequestClass;
 
 namespace ParcelApi.Controllers;
 
@@ -50,7 +52,7 @@ public class LetterBagController : BagController
   
 
   [HttpPut("{id}/add-letters")]
-  public IActionResult Update(string id, int letterCount, decimal weight, decimal price)
+  public IActionResult Update(string id, LetterBagUpdate request)
   {
     try
     {
@@ -65,7 +67,7 @@ public class LetterBagController : BagController
         return BadRequest("Unauthorised");
       }
 
-      _letterBagService.AddLettersToBag(bag, letterCount, weight, price);
+      _letterBagService.AddLettersToBag(bag, request);
       return Ok();
 
     }

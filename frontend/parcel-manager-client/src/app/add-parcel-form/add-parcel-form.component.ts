@@ -58,5 +58,3 @@ export class AddParcelFormComponent {
   }
 
 }
-
-// TODO change Parcel model so error handling is easier on front end. remove validators for price and weight in API

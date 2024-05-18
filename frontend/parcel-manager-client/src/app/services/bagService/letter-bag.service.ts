@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { LetterBag } from '../../interfaces/bags';
+import { LetterBagForm } from '../../interfaces/bags';
+import { extractMessages } from '../../helpers/helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,19 @@ export class LetterBagService {
       catchError(error => {
         console.error('An error occurred:', error);
         return throwError(() => `An error occurred while retrieving letter bag. Error: ${error}`);
+      })
+    );
+  }
+
+  addLettersToBag(id: string, request: LetterBagForm): Observable<LetterBag> {
+    return this.http.put<LetterBag>(`${this.baseUrl}/LetterBag/${id}/add-letters`, request).pipe(
+      catchError(error => {
+        console.error('An error occurred:', error.error);
+        if (error.error.errors) {
+          const errorMessages = extractMessages(error.error.errors);
+          return throwError(() => `${errorMessages}`);
+        }
+        return throwError(() => `${error.error}`);
       })
     );
   }

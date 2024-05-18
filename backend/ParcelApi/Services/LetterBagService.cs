@@ -3,6 +3,7 @@ using ParcelApi.Data;
 using ParcelApi.Helpers;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
+using ParcelApi.RequestClass;
 
 namespace ParcelApi.Services;
 
@@ -45,21 +46,21 @@ public class LetterBagService : BagService
 
   }
 
-  public void AddLettersToBag(LetterBag bag, int letterCount, decimal weight, decimal price)
+  public void AddLettersToBag(LetterBag bag, LetterBagUpdate request)
   {
     try
     {
-      if (bag != null && letterCount > 0 && weight > 0 && price > 0)
+      if (bag != null && request.LetterCount > 0 && request.Weight > 0 && request.Price > 0)
       {
         if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add letters to bags in this shipment");
 
-        weight = decimal.Parse(weight.ToString("#.###"));
-        price = decimal.Parse(price.ToString("#.##"));
+        request.Weight = decimal.Parse(request.Weight.ToString("#.###"));
+        request.Price = decimal.Parse(request.Price.ToString("#.##"));
 
-        bag.LetterCount += letterCount;
-        bag.Weight += weight;
-        bag.Price += price;
-        bag.ItemCount += letterCount;
+        bag.LetterCount += request.LetterCount;
+        bag.Weight += request.Weight;
+        bag.Price += request.Price;
+        bag.ItemCount += request.LetterCount;
 
         _context.SaveChanges();
         

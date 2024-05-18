@@ -22,6 +22,6 @@
   <p><strong>Price:</strong> €{{ letterBag.price }}</p>
   <p><strong>Weight:</strong> {{ letterBag.weight }}kg</p>
   <p><strong>Letter count:</strong> {{ letterBag.itemCount }}</p>
-  <button>Add letters</button>
+  <button [routerLink]="['/shipment', shipmentId, 'bag', letterBag.bagId, 'add-letters' ]">Add letters</button>
   <button [routerLink]="['/shipment', shipmentId ]">Back to shipment</button>
 </section>

@@ -28,7 +28,6 @@ export class ParcelBagService {
       catchError(error => {
         console.error('An error occurred:', error.error);
         if (error.error.errors) {
-          console.log('errrrorrrrrrr ', error.error.errors);
           const errorMessages = extractMessages(error.error.errors);
           return throwError(() => `${errorMessages}`);
         }
