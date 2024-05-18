@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { ParcelBag } from '../../interfaces/bags';
 import { ParcelFormSubmit } from '../../interfaces/parcels';
+import { extractMessages } from '../../helpers/helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,11 @@ export class ParcelBagService {
     return this.http.put<ParcelBag>(`${this.baseUrl}/ParcelBag/${id}/add-parcel`, request).pipe(
       catchError(error => {
         console.error('An error occurred:', error.error);
+        if (error.error.errors) {
+          console.log('errrrorrrrrrr ', error.error.errors);
+          const errorMessages = extractMessages(error.error.errors);
+          return throwError(() => `${errorMessages}`);
+        }
         return throwError(() => `${error.error}`);
       })
     );

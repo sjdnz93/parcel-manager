@@ -50,7 +50,7 @@ export class AddParcelFormComponent {
         window.alert('Parcel added successfully to bag.');
       },
       error: (error) => {
-        console.log(error);
+        console.log('ERRORFROM FORM', error);
         this.errorMessage = error;
       }
     });
