@@ -21,6 +21,8 @@ export class AddBagFormComponent {
   shipmentId!: string;
   route: ActivatedRoute = inject(ActivatedRoute);
 
+  
+
 
 
   constructor() {

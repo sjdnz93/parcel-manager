@@ -25,3 +25,9 @@
   <button [routerLink]="['/shipment', shipmentId, 'bag', letterBag.bagId, 'add-letters' ]" [disabled]="letterBag.isFinalised">Add letters</button>
   <button [routerLink]="['/shipment', shipmentId ]">Back to shipment</button>
 </section>
+
+<section class="loading" *ngIf="loading">
+  <div class="loading-container">
+    <img src="./assets/spinner.gif" alt="Loading..." aria-hidden="true">
+  </div>
+</section>

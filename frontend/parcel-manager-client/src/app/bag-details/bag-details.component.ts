@@ -24,6 +24,7 @@ export class BagDetailsComponent {
   letterBag: LetterBag | undefined;
   errorMessage = '';
   shipmentId: string = ''
+  loading: boolean = true;
 
   ngOnInit() {
     const id = this.route.snapshot.params['bagId'];
@@ -45,10 +46,12 @@ export class BagDetailsComponent {
       next: (data) => {
         this.letterBag = data;
         console.log('Bag: ', data);
+        this.loading = false;
       },
       error: (error: any) => {
         console.error(error);
         this.errorMessage = 'Error retrieving bag: ', error;
+        this.loading = false;
       }
     });
   }
@@ -58,10 +61,12 @@ export class BagDetailsComponent {
       next: (data) => {
         this.parcelBag = data;
         console.log('Bag: ', data);
+        this.loading = false;
       },
       error: (error: any) => {
         console.error(error);
         this.errorMessage = 'Error retrieving bag: ', error;
+        this.loading = false;
       }
     });
   }

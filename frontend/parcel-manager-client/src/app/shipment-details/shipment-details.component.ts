@@ -26,6 +26,8 @@ export class ShipmentDetailsComponent {
 
   bags: (LetterBag | ParcelBag)[] = []
 
+  loading: boolean = true;
+
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
@@ -37,10 +39,12 @@ export class ShipmentDetailsComponent {
       next: (data) => {
         this.shipment = data;
         console.log('Shipment: ', data);
+        this.loading = false;
       },
       error: (error: any) => {
         console.error(error);
         this.errorMessage = 'Error retrieving shipment: ', error;
+        this.loading = false;
       }
     });
   }

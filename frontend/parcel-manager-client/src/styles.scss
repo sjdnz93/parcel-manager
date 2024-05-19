@@ -21,6 +21,7 @@
 
 main {
   background-color: darkgray;
+  height: 100vh;
 }
 
 h1 {
@@ -37,7 +38,7 @@ h3 {
 }
 
 p {
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .page-content {
@@ -165,3 +166,19 @@ button:disabled {
   display: flex;
   justify-content: space-between;
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+
+    img {
+      width: 200px;
+    }
+  }
+}
+

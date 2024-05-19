@@ -26,3 +26,9 @@
     [shipmentId]="shipment!.shipmentId"></app-bag-results-list>
   <div *ngIf="!shipment?.bags?.length">No bags are in this shipment</div>
 </section>
+
+<section class="loading" *ngIf="loading">
+  <div class="loading-container">
+    <img src="./assets/spinner.gif" alt="Loading..." aria-hidden="true">
+  </div>
+</section>

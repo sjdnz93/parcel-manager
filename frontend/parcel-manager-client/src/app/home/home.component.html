@@ -3,10 +3,16 @@
   <button [routerLink]="['/create-shipment']">Create shipment</button>
 </section>
 
-<section class="results-list">  
+<section class="results-list">
   <app-shipment-results *ngFor="let shipmentResult of shipmentList" [shipment]="shipmentResult"></app-shipment-results>
 </section>
 
+<section class="results-list" *ngIf="!shipmentList.length">
+  <div>There are no shipments in the system</div>
+</section>
 
-
-
+<section class="loading" *ngIf="loading">
+  <div class="loading-container">
+    <img src="./assets/spinner.gif" alt="Loading..." aria-hidden="true">
+  </div>
+</section>

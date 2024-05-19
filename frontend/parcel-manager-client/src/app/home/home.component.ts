@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit {
 
   AirportCodes: any = AirportCodes;
 
+  loading: boolean = true;
+
   ngOnInit() {
     this.getAllShipments();
   }
@@ -35,10 +37,12 @@ export class HomeComponent implements OnInit {
       next: (data) => {
         this.shipmentList = data;
         console.log('Shipments: ', data);
+        this.loading = false;
       },
       error: (error) => {
         console.log('Error retrieving shipments: ', error);
         this.errorMessagae = 'Error retrieving shipments: ', error;
+        this.loading= false;
       }
     })
 
