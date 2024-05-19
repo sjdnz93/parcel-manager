@@ -6,7 +6,7 @@ using ParcelApi.Models.Bags;
 
 namespace ParcelApi.Services;
 
-public class BagService
+public class BagService : IBagService
 {
 
   protected readonly ParcelManagerContext _context;
@@ -17,11 +17,11 @@ public class BagService
     _context = context;
   }
 
-  public List<ParcelBag> GetAllParcelBags()
+  public async Task<List<ParcelBag>> GetAllParcelBags()
   {
     try
     {
-      return _context.ParcelBags.Include(p => p.Parcels).ToList();
+      return await _context.ParcelBags.Include(p => p.Parcels).ToListAsync();
     }
     catch (Exception ex)
     {
@@ -30,11 +30,11 @@ public class BagService
     }
   }
 
-  public ParcelBag? GetParcelBagById(string id)
+  public async Task<ParcelBag?> GetParcelBagById(string id)
   {
     try
     {
-      return _context.ParcelBags.Include(p => p.Parcels).FirstOrDefault(b => b.BagId == id);
+      return await _context.ParcelBags.Include(p => p.Parcels).FirstOrDefaultAsync(b => b.BagId == id);
     }
     catch (Exception ex)
     {
@@ -43,11 +43,11 @@ public class BagService
     }
   }
 
-  public List<LetterBag> GetAllLetterBags()
+  public async Task<List<LetterBag>> GetAllLetterBags()
   {
     try
     {
-      return _context.LetterBags.ToList();
+      return await _context.LetterBags.ToListAsync();
     }
     catch (Exception ex)
     {
@@ -56,11 +56,11 @@ public class BagService
     }
   }
 
-  public LetterBag? GetLetterBagById(string id)
+  public async Task<LetterBag?> GetLetterBagById(string id)
   {
     try
     {
-      return _context.LetterBags.FirstOrDefault(b => b.BagId == id);
+      return await _context.LetterBags.FirstOrDefaultAsync(b => b.BagId == id);
     }
     catch (Exception ex)
     {
@@ -69,12 +69,12 @@ public class BagService
     }
   }
 
-  public List<Bag> GetAllBags()
+  public async Task<List<Bag>> GetAllBags()
   {
 
     try
     {
-      return _context.Bags.ToList();
+      return await _context.Bags.ToListAsync();
     }
     catch (Exception ex)
     {

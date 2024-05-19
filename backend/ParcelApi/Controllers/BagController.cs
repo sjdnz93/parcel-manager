@@ -11,19 +11,19 @@ namespace ParcelApi.Controllers;
 public class BagController : ControllerBase
 {
 
-  protected readonly BagService _bagService;
+  protected readonly IBagService _bagService;
 
-  public BagController(BagService bagService)
+  public BagController(IBagService bagService)
   {
     _bagService = bagService;
   }
 
   [HttpGet]
-  public ActionResult<List<Bag>> GetAllBags()
+  public async Task<ActionResult<List<Bag>>> GetAllBags()
   {
     try
     {
-      var bags = _bagService.GetAllBags();
+      var bags = await _bagService.GetAllBags();
       return bags;
     }
     catch (Exception ex)

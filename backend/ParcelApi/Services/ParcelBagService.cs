@@ -1,21 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParcelApi.Data;
 using ParcelApi.Helpers;
+using ParcelApi.Interfaces;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
 using ParcelApi.Services;
 
 namespace ParcelApi.Services;
 
-public class ParcelBagService : BagService
+public class ParcelBagService : BagService, IParcelBagService
 {
   public ParcelBagService(ParcelManagerContext context) : base(context)
   {
   }
 
-  public void AddParcelBag(ParcelBag bag)
+  public async Task AddParcelBag(ParcelBag bag)
   {
-    var bagListFromDb = _context.Bags.ToList();
+    var bagListFromDb = await _context.Bags.ToListAsync();
 
     while (true)
     {
@@ -28,18 +29,18 @@ public class ParcelBagService : BagService
       bag.ItemCount = 0;
       if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
       {
-        _context.ParcelBags.Add(bag);
-        _context.SaveChanges();
+        await _context.ParcelBags.AddAsync(bag);
+        await _context.SaveChangesAsync();
         break;
       }
     }
   }
 
-  public void AddParcelToBag(string id, Parcel parcel)
+  public async Task AddParcelToBag(string id, Parcel parcel)
   {
     try
     {
-      var bag = _context.ParcelBags.Include(p => p.Parcels).FirstOrDefault(b => b.BagId == id);
+      var bag = await _context.ParcelBags.Include(p => p.Parcels).FirstOrDefaultAsync(b => b.BagId == id);
       if (bag != null && parcel != null)
       {
         if (bag.IsFinalised) throw new Exception("This shipment has already been finalised. You can no longer add parcels to bags in this shipment.");
@@ -51,13 +52,13 @@ public class ParcelBagService : BagService
         if (parcel.RecipientName == "string" || parcel.RecipientName == "") throw new Exception("Please input a valid recipient name");
 
         ParcelService parcelService = new ParcelService(_context);
-        parcelService.Add(parcel);
+        await parcelService.Add(parcel);
         bag.Parcels.Add(parcel);
         bag.ItemCount++;
         bag.Price += parcel.Price;
         bag.Weight += parcel.Weight;
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
       }
     }
     catch (Exception ex)
@@ -69,3 +70,5 @@ public class ParcelBagService : BagService
   }
 
 }
+
+// TODO async/await on parcelService.Add

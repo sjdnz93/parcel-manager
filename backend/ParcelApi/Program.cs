@@ -1,4 +1,6 @@
+using ParcelApi;
 using ParcelApi.Data;
+using ParcelApi.Interfaces;
 using ParcelApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,11 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<BagService>();
-builder.Services.AddScoped<ParcelBagService>();
-builder.Services.AddScoped<LetterBagService>();
-builder.Services.AddScoped<ParcelService>();
-builder.Services.AddScoped<ShipmentService>();
+builder.Services.AddScoped<IBagService, BagService>();
+builder.Services.AddScoped<IParcelBagService, ParcelBagService>();
+builder.Services.AddScoped<ILetterBagService, LetterBagService>();
+builder.Services.AddScoped<IParcelService, ParcelService>();
+builder.Services.AddScoped<IShipmentService, ShipmentService>();
 
 builder.Services.AddCors(); // Add this line to register CORS services
 

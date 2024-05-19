@@ -3,10 +3,11 @@ using ParcelApi.Data;
 using ParcelApi.Helpers;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
+using ParcelApi.Interfaces;
 
 namespace ParcelApi.Services;
 
-public class ShipmentService
+public class ShipmentService : IShipmentService
 {
   private readonly ParcelManagerContext? _context;
 
@@ -20,11 +21,11 @@ public class ShipmentService
 
   }
 
-  public virtual List<Shipment> GetAll()
+  public virtual async Task<List<Shipment>> GetAll()
   {
     try
     {
-      return _context!.Shipments.Include(s => s.Bags).ToList();
+      return await _context!.Shipments.Include(s => s.Bags).ToListAsync();
     }
     catch (Exception ex)
     {
@@ -33,12 +34,12 @@ public class ShipmentService
     }
   }
 
-  public virtual Shipment? Get(string id)
+  public virtual async Task<Shipment?> Get(string id)
   {
     try
     {
-      return _context!.Shipments.Include(s => s.Bags)
-                               .FirstOrDefault(s => s.ShipmentId == id);
+      return await _context!.Shipments.Include(s => s.Bags)
+                               .FirstOrDefaultAsync(s => s.ShipmentId == id);
     }
     catch (Exception ex)
     {
@@ -48,11 +49,11 @@ public class ShipmentService
 
   }
 
-  public virtual void AddShipment(Shipment shipment)
+  public virtual async Task AddShipment(Shipment shipment)
   {
     try
     {
-      var shipmentList = GetAll();
+      var shipmentList = await GetAll();
       while (true)
       {
         if (LocationHelpers.IsFlightInternal(shipment.DestinationCountry, shipment.Airport)) throw new Exception("Shipment destination is in the same country as shipment origin airport. Do you really need to make an internal flight? Probably not.");
@@ -67,8 +68,8 @@ public class ShipmentService
         {
           try
           {
-            _context!.Shipments.Add(shipment);
-            _context.SaveChanges();
+            await _context!.Shipments.AddAsync(shipment);
+            await _context.SaveChangesAsync();
             break;
           }
           catch (Exception ex)
@@ -87,13 +88,13 @@ public class ShipmentService
 
   }
 
-  public void AddParcelBagToShipment(string id, ParcelBag bag)
+  public async Task AddParcelBagToShipment(string id, ParcelBag bag)
   {
     try
     {
-      var shipment = _context!.Shipments
+      var shipment = await _context!.Shipments
                              .Include(s => s.Bags)
-                             .FirstOrDefault(s => s.ShipmentId == id);
+                             .FirstOrDefaultAsync(s => s.ShipmentId == id);
       if (shipment != null)
       {
 
@@ -104,11 +105,11 @@ public class ShipmentService
         if (!LocationHelpers.DoDestinationsMatch(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
 
         ParcelBagService parcelBagService = new ParcelBagService(_context);
-        parcelBagService.AddParcelBag(bag);
+        await parcelBagService.AddParcelBag(bag);
         
         shipment.Bags.Add(bag);
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
       }
       else throw new Exception("Shipment not found");
@@ -121,7 +122,7 @@ public class ShipmentService
 
   }
 
-  public void AddLetterBagToShipment(Shipment shipment, LetterBag bag)
+  public async Task AddLetterBagToShipment(Shipment shipment, LetterBag bag)
   {
     try
     {
@@ -135,10 +136,10 @@ public class ShipmentService
 
         shipment.Bags ??= new List<Bag>();
         LetterBagService letterBagService = new LetterBagService(_context!);
-        letterBagService.AddLetterBag(bag);
+        await letterBagService.AddLetterBag(bag);
         shipment.Bags.Add(bag);
 
-        _context!.SaveChanges();
+        await _context!.SaveChangesAsync();
       }
       else throw new Exception("Shipment not found");
     }
@@ -151,7 +152,7 @@ public class ShipmentService
 
   }
 
-  public void FinaliseShipment(Shipment shipment)
+  public async Task FinaliseShipment(Shipment shipment)
   {
     try
     {
@@ -170,7 +171,7 @@ public class ShipmentService
           {
             if (bag.BagType == "Parcel")
             {
-              var populatedParcelBag = bagService.GetParcelBagById(bag.BagId);
+              var populatedParcelBag = await bagService.GetParcelBagById(bag.BagId);
               if (populatedParcelBag != null)
               {
                 if (populatedParcelBag.Parcels == null || populatedParcelBag.Parcels.Count == 0) throw new Exception($"Bag ID {bag.BagId} has no parcels. Please fill bag before finalising shipment.");
@@ -178,7 +179,7 @@ public class ShipmentService
             }
             else if (bag.BagType == "Letter")
             {
-              var populatedLetterBag = bagService.GetLetterBagById(bag.BagId);
+              var populatedLetterBag = await bagService.GetLetterBagById(bag.BagId);
               if (populatedLetterBag != null)
               {
                 if (populatedLetterBag.LetterCount == 0) throw new Exception($"Bag ID {bag.BagId} has no letters. Please fill bag before finalising shipment.");
@@ -196,7 +197,7 @@ public class ShipmentService
 
         shipment.IsFinalised = true;
 
-        _context!.SaveChanges();
+        await _context!.SaveChangesAsync();
 
       }
     }

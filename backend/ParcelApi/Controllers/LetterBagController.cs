@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ParcelApi.Models.Bags;
 using Microsoft.VisualBasic;
 using ParcelApi.RequestClass;
+using ParcelApi.Interfaces;
 
 namespace ParcelApi.Controllers;
 
@@ -11,18 +12,18 @@ namespace ParcelApi.Controllers;
 public class LetterBagController : BagController
 {
 
-  private readonly LetterBagService _letterBagService;
-  public LetterBagController(BagService bagService, LetterBagService letterBagService) : base(bagService)
+  private readonly ILetterBagService _letterBagService;
+  public LetterBagController(IBagService bagService, ILetterBagService letterBagService) : base(bagService)
   {
     _letterBagService = letterBagService;
   }
 
   [HttpGet("letter-bags")]
-  public ActionResult<List<LetterBag>> GetAllLetterBags()
+  public async Task<ActionResult<List<LetterBag>>> GetAllLetterBags()
   {
     try
     {
-      var bags = _bagService.GetAllLetterBags();
+      var bags = await _bagService.GetAllLetterBags();
       return Ok(bags);
     }
     catch (Exception ex)
@@ -33,11 +34,11 @@ public class LetterBagController : BagController
   }
 
   [HttpGet("{id}")]
-  public ActionResult<LetterBag> GetLetterBagById(string id)
+  public async Task<ActionResult<LetterBag>> GetLetterBagById(string id)
   {
     try
     {
-      var bag = _bagService.GetLetterBagById(id);
+      var bag = await _bagService.GetLetterBagById(id);
       if (bag == null)
       {
         return NotFound("Letter bag with this ID does not exist in system");
@@ -52,11 +53,11 @@ public class LetterBagController : BagController
   
 
   [HttpPut("{id}/add-letters")]
-  public IActionResult Update(string id, LetterBagUpdate request)
+  public async Task<IActionResult> Update(string id, LetterBagUpdate request)
   {
     try
     {
-      var bag = _bagService.GetLetterBagById(id);
+      var bag = await _bagService.GetLetterBagById(id);
       if (bag == null)
       {
         return NotFound("Letter bag with this ID does not exist in system");
@@ -67,7 +68,7 @@ public class LetterBagController : BagController
         return BadRequest("Unauthorised");
       }
 
-      _letterBagService.AddLettersToBag(bag, request);
+      await _letterBagService.AddLettersToBag(bag, request);
       return Ok();
 
     }

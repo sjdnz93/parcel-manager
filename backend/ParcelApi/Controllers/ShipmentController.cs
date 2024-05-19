@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
 using ParcelApi.Services;
+using ParcelApi.Interfaces;
 
 namespace ParcelApi.Controllers;
 
@@ -10,19 +11,19 @@ namespace ParcelApi.Controllers;
 [Route("[controller]")]
 public class ShipmentController : ControllerBase
 {
-  private readonly ShipmentService _shipmentService;
+  private readonly IShipmentService _shipmentService;
 
-  public ShipmentController(ShipmentService shipmentService)
+  public ShipmentController(IShipmentService shipmentService)
   {
     _shipmentService = shipmentService;
   }
 
   [HttpGet]
-  public ActionResult<List<Shipment>> GetAll() //=> ShipmentService.GetAll();
+  public async Task<ActionResult<List<Shipment>>> GetAll() //=> ShipmentService.GetAll();
   {
     try
     {
-      var shipments = _shipmentService.GetAll();
+      var shipments = await _shipmentService.GetAll();
       return Ok(shipments);
     }
     catch (Exception ex)
@@ -32,11 +33,11 @@ public class ShipmentController : ControllerBase
   }
 
   [HttpGet("{id}")]
-  public ActionResult<Shipment> Get(string id)
+  public async Task<ActionResult<Shipment>> Get(string id)
   {
     try
     {
-      var shipment = _shipmentService.Get(id);
+      var shipment = await _shipmentService.Get(id);
       if (shipment == null)
       {
         return NotFound("Shipment could not be found");
@@ -50,7 +51,7 @@ public class ShipmentController : ControllerBase
   }
 
   [HttpPost]
-  public IActionResult CreateShipment(Shipment shipment)
+  public async Task<IActionResult> CreateShipment(Shipment shipment)
   {
     try
     {
@@ -58,7 +59,7 @@ public class ShipmentController : ControllerBase
       {
         return BadRequest("Shipment cannot be null");
       }
-      _shipmentService.AddShipment(shipment);
+      await _shipmentService.AddShipment(shipment);
       return CreatedAtAction(nameof(Get), new { id = shipment.ShipmentId }, shipment);
     }
     catch (Exception ex)
@@ -69,11 +70,11 @@ public class ShipmentController : ControllerBase
   }
 
   [HttpPut("{id}/add-parcel-bag")]
-  public IActionResult AddParcelBagToShipment(string id, ParcelBag bag)
+  public async Task<IActionResult> AddParcelBagToShipment(string id, ParcelBag bag)
   {
     try
     {
-      var shipment = _shipmentService.Get(id);
+      var shipment = await _shipmentService.Get(id);
       if (shipment == null)
       {
         return NotFound("Shipment with this ID does not exist");
@@ -84,7 +85,7 @@ public class ShipmentController : ControllerBase
         return BadRequest("Not authorised");
       }
 
-      _shipmentService.AddParcelBagToShipment(id, bag);
+      await _shipmentService.AddParcelBagToShipment(id, bag);
 
       return Ok();
     }
@@ -96,11 +97,11 @@ public class ShipmentController : ControllerBase
   }
 
   [HttpPut("{id}/add-letter-bag")]
-  public IActionResult AddLetterBagToShipment(string id, LetterBag bag)
+  public async Task<IActionResult> AddLetterBagToShipment(string id, LetterBag bag)
   {
     try
     {
-      var shipment = _shipmentService.Get(id);
+      var shipment = await _shipmentService.Get(id);
       if (shipment == null)
       {
         return NotFound("Shipment with this ID does not exist");
@@ -111,7 +112,7 @@ public class ShipmentController : ControllerBase
         return BadRequest("Not authorised");
       }
 
-      _shipmentService.AddLetterBagToShipment(shipment, bag);
+      await _shipmentService.AddLetterBagToShipment(shipment, bag);
 
       return Ok();
 
@@ -124,11 +125,11 @@ public class ShipmentController : ControllerBase
   }
 
   [HttpPut("{id}/finalise-shipment")]
-  public IActionResult FinaliseShipment(string id)
+  public async Task<IActionResult> FinaliseShipment(string id)
   {
     try
     {
-      var shipment = _shipmentService.Get(id);
+      var shipment = await _shipmentService.Get(id);
       if (shipment == null)
       {
         return NotFound();
@@ -139,7 +140,7 @@ public class ShipmentController : ControllerBase
         return BadRequest();
       }
 
-      _shipmentService.FinaliseShipment(shipment);
+      await _shipmentService.FinaliseShipment(shipment);
 
       return Ok();
     }

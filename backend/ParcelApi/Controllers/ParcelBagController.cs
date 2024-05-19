@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ParcelApi.Models.Bags;
 using ParcelApi.Models;
+using ParcelApi.Interfaces;
 
 namespace ParcelApi.Controllers;
 
@@ -9,18 +10,18 @@ namespace ParcelApi.Controllers;
 [Route("[controller]")]
 public class ParcelBagController : BagController
 {
-  private readonly ParcelBagService _parcelBagService;
-  public ParcelBagController(BagService bagService, ParcelBagService parcelBagService) : base(bagService)
+  private readonly IParcelBagService _parcelBagService;
+  public ParcelBagController(IBagService bagService, IParcelBagService parcelBagService) : base(bagService)
   {
     _parcelBagService = parcelBagService;
   }
 
   [HttpGet("parcel-bags")]
-  public ActionResult<List<ParcelBag>> GetAllParcelBags()
+  public async Task<ActionResult<List<ParcelBag>>> GetAllParcelBags()
   {
     try
     {
-      var bags = _bagService.GetAllParcelBags();
+      var bags = await _bagService.GetAllParcelBags();
       if (bags == null)
       {
         return NotFound("No parcel bags exist in the system");
@@ -35,11 +36,11 @@ public class ParcelBagController : BagController
   }
 
   [HttpGet("{id}")]
-  public ActionResult<ParcelBag> Get(string id)
+  public async Task<ActionResult<ParcelBag>> Get(string id)
   {
     try
     {
-      var bag = _bagService.GetParcelBagById(id);
+      var bag = await _bagService.GetParcelBagById(id);
       if (bag == null)
       {
         return NotFound("Parcel bag with this ID does not exist in the system");
@@ -54,11 +55,11 @@ public class ParcelBagController : BagController
   }
 
   [HttpPut("{id}/add-parcel")]
-  public IActionResult Update(string id, Parcel parcel)
+  public async Task<IActionResult> Update(string id, Parcel parcel)
   {
     try
     {
-      var bag = _bagService.GetParcelBagById(id);
+      var bag = await _bagService.GetParcelBagById(id);
       if (bag == null)
       {
         return NotFound("Parcel bag with this ID does not exist in system");
@@ -69,7 +70,7 @@ public class ParcelBagController : BagController
         return BadRequest("Unauthorised");
       }
 
-      _parcelBagService.AddParcelToBag(id, parcel);
+      await _parcelBagService.AddParcelToBag(id, parcel);
       return Ok();
     }
     catch (Exception ex)

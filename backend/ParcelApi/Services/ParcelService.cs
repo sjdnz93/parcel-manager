@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using ParcelApi.Data;
 using ParcelApi.Helpers;
+using ParcelApi.Interfaces;
 using ParcelApi.Models;
 
 namespace ParcelApi.Services;
 
-public class ParcelService
+public class ParcelService : IParcelService
 {
   private readonly ParcelManagerContext _context;
 
@@ -14,11 +15,11 @@ public class ParcelService
     _context = context;
   }
 
-  public List<Parcel> GetAll()
+  public async Task<List<Parcel>> GetAll()
   {
     try
     {
-      return _context.Parcels.ToList();
+      return await _context.Parcels.ToListAsync();
     }
     catch (Exception ex)
     {
@@ -27,11 +28,11 @@ public class ParcelService
     }
   }
 
-  public Parcel? Get(string id)
+  public async Task<Parcel?> Get(string id)
   {
     try
     {
-      return _context.Parcels.FirstOrDefault(p => p.ParcelId == id);
+      return await _context.Parcels.FirstOrDefaultAsync(p => p.ParcelId == id);
     }
     catch (Exception ex)
     {
@@ -40,18 +41,18 @@ public class ParcelService
     }
   }
 
-  public void Add(Parcel parcel)
+  public async Task Add(Parcel parcel)
   {
     try
     {
-      var parcelList = GetAll();
+      var parcelList = await GetAll();
       while (true)
       {
         parcel.ParcelId = IdNumberHelpers.GenerateParcelId();
         if (!parcelList.Any(x => x.ParcelId == parcel.ParcelId))
         {
-          _context.Parcels.Add(parcel);
-          _context.SaveChanges();
+          await _context.Parcels.AddAsync(parcel);
+          await _context.SaveChangesAsync();
           break;
         }
       }

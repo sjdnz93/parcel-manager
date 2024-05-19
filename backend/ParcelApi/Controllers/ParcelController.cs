@@ -1,6 +1,7 @@
 ﻿using ParcelApi.Models;
 using ParcelApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using ParcelApi.Interfaces;
 
 namespace ParcelApi.Controllers;
 
@@ -9,18 +10,18 @@ namespace ParcelApi.Controllers;
 public class ParcelController : ControllerBase
 {
 
-  private readonly ParcelService _parcelService;
-  public ParcelController(ParcelService parcelService)
+  private readonly IParcelService _parcelService;
+  public ParcelController(IParcelService parcelService)
   {
     _parcelService = parcelService;
   }
 
   [HttpGet]
-  public ActionResult<List<Parcel>> GetAll()
+  public async Task<ActionResult<List<Parcel>>> GetAll()
   {
     try
     {
-      var parcels = _parcelService.GetAll();
+      var parcels = await _parcelService.GetAll();
       return Ok(parcels);
     }
     catch (Exception ex)
@@ -30,11 +31,11 @@ public class ParcelController : ControllerBase
   }
 
   [HttpGet("{id}")]
-  public ActionResult<Parcel> Get(string id)
+  public async Task<ActionResult<Parcel>> Get(string id)
   {
     try
     {
-      var parcel = _parcelService.Get(id);
+      var parcel = await _parcelService.Get(id);
 
       if (parcel == null)
       {
