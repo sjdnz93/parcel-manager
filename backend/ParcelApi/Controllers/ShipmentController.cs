@@ -152,5 +152,3 @@ public class ShipmentController : ControllerBase
 
 
 }
-
-// TODO add PUT and DELETE controllers

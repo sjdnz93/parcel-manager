@@ -1,13 +1,11 @@
 ﻿using ParcelApi.Models;
 using ParcelApi.Models.Bags;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Tests.MockData;
+namespace Tests.DataMock;
 
-public static class MockData
+public static class MockDb
 {
-    public static List<Shipment> Shipments { get; } = new List<Shipment>
+      public static List<Shipment> Shipments { get; } = new List<Shipment>
     {
         new Shipment
         {
@@ -54,11 +52,11 @@ public static class MockData
             },
             IsFinalised = false
         },
-        // Add more shipments here...
     };
 
     public static List<Shipment> GetMockData()
     {
         return Shipments.ToList();
     }
+
 }

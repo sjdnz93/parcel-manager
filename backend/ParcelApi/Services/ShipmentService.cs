@@ -48,7 +48,7 @@ public class ShipmentService
 
   }
 
-  public void AddShipment(Shipment shipment)
+  public virtual void AddShipment(Shipment shipment)
   {
     try
     {
@@ -211,5 +211,3 @@ public class ShipmentService
 
 
 }
-
-// TODO add PUT and DELETE methods

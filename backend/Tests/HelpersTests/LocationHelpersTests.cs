@@ -2,8 +2,6 @@
 using ParcelApi.Models;
 
 namespace Tests.HelpersTests;
-
-
 [TestClass]
 public class LocationHelpersTests
 {
