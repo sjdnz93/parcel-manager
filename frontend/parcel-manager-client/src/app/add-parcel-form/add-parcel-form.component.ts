@@ -22,7 +22,8 @@ export class AddParcelFormComponent {
   addParcelForm!: FormGroup;
   parcelBagService = inject(ParcelBagService);
 
-  constructor() {
+
+  ngOnInit() {
     this.shipmentId = this.route.snapshot.params['shipmentId'];
     this.bagId = this.route.snapshot.params['bagId'];
 

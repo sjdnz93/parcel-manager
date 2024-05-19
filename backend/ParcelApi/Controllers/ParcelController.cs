@@ -20,7 +20,8 @@ public class ParcelController : ControllerBase
   {
     try
     {
-      return _parcelService.GetAll();
+      var parcels = _parcelService.GetAll();
+      return Ok(parcels);
     }
     catch (Exception ex)
     {
@@ -39,7 +40,7 @@ public class ParcelController : ControllerBase
       {
         return NotFound("Parcel could not be found");
       }
-      return parcel;
+      return Ok(parcel);
     }
     catch (Exception ex)
     {

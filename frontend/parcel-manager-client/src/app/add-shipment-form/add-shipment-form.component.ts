@@ -31,7 +31,7 @@ export class AddShipmentFormComponent {
   errorMessage: string | undefined;
 
 
-  constructor() {
+  ngOnInit() {
     this.addShipmentForm = new FormGroup({
       airport: new FormControl('TLL', [Validators.required, Validators.pattern("^(TLL|HEL|RIX)$")]),
       destinationCountry: new FormControl('LV', [Validators.required, Validators.pattern("^(EE|LV|FI)$")]),
@@ -40,6 +40,7 @@ export class AddShipmentFormComponent {
       flightTime: new FormControl(this.time, [Validators.required])
     });
   }
+
 
   airportCodeValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {

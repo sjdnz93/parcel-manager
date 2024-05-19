@@ -22,7 +22,8 @@ public class ShipmentController : ControllerBase
   {
     try
     {
-      return _shipmentService.GetAll();
+      var shipments = _shipmentService.GetAll();
+      return Ok(shipments);
     }
     catch (Exception ex)
     {
@@ -40,7 +41,7 @@ public class ShipmentController : ControllerBase
       {
         return NotFound("Shipment could not be found");
       }
-      return shipment;
+      return Ok(shipment);
     }
     catch (Exception ex)
     {

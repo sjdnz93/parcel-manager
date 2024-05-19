@@ -8,18 +8,23 @@ namespace ParcelApi.Services;
 
 public class ShipmentService
 {
-  private readonly ParcelManagerContext _context;
+  private readonly ParcelManagerContext? _context;
 
   public ShipmentService(ParcelManagerContext context)
   {
     _context = context;
   }
 
-  public List<Shipment> GetAll()
+  public ShipmentService()
+  {
+
+  }
+
+  public virtual List<Shipment> GetAll()
   {
     try
     {
-      return _context.Shipments.Include(s => s.Bags).ToList();
+      return _context!.Shipments.Include(s => s.Bags).ToList();
     }
     catch (Exception ex)
     {
@@ -28,11 +33,11 @@ public class ShipmentService
     }
   }
 
-  public Shipment? Get(string id)
+  public virtual Shipment? Get(string id)
   {
     try
     {
-      return _context.Shipments.Include(s => s.Bags)
+      return _context!.Shipments.Include(s => s.Bags)
                                .FirstOrDefault(s => s.ShipmentId == id);
     }
     catch (Exception ex)
@@ -62,7 +67,7 @@ public class ShipmentService
         {
           try
           {
-            _context.Shipments.Add(shipment);
+            _context!.Shipments.Add(shipment);
             _context.SaveChanges();
             break;
           }
@@ -86,7 +91,7 @@ public class ShipmentService
   {
     try
     {
-      var shipment = _context.Shipments
+      var shipment = _context!.Shipments
                              .Include(s => s.Bags)
                              .FirstOrDefault(s => s.ShipmentId == id);
       if (shipment != null)
@@ -96,7 +101,7 @@ public class ShipmentService
 
         if (LocationHelpers.IsFlightInternal(bag.DestinationCountry, shipment.Airport)) throw new Exception("Bag destination is in the same country as shipment origin airport. Do you really need to make an internal flight to transport this package? Probably not.");
 
-        if (!LocationHelpers.DoesShipmentDestinationMatchBagDestination(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
+        if (!LocationHelpers.DoDestinationsMatch(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
 
         ParcelBagService parcelBagService = new ParcelBagService(_context);
         parcelBagService.AddParcelBag(bag);
@@ -126,14 +131,14 @@ public class ShipmentService
 
         if (LocationHelpers.IsFlightInternal(bag.DestinationCountry, shipment.Airport)) throw new Exception("Bag destination is in the same country as shipment origin airport. Do you really need to make an internal flight to transport this package? Probably not.");
 
-        if (!LocationHelpers.DoesShipmentDestinationMatchBagDestination(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
+        if (!LocationHelpers.DoDestinationsMatch(shipment.DestinationCountry, bag.DestinationCountry)) throw new Exception("Shipment destination country does not match bag destination country");
 
         shipment.Bags ??= new List<Bag>();
-        LetterBagService letterBagService = new LetterBagService(_context);
+        LetterBagService letterBagService = new LetterBagService(_context!);
         letterBagService.AddLetterBag(bag);
         shipment.Bags.Add(bag);
 
-        _context.SaveChanges();
+        _context!.SaveChanges();
       }
       else throw new Exception("Shipment not found");
     }
@@ -151,7 +156,7 @@ public class ShipmentService
     try
     {
       var todaysDate = DateTime.Now;
-      BagService bagService = new BagService(_context);
+      BagService bagService = new BagService(_context!);
       if (shipment != null)
       {
         if (shipment.IsFinalised) throw new Exception("Shipment has already been finalised");
@@ -191,7 +196,7 @@ public class ShipmentService
 
         shipment.IsFinalised = true;
 
-        _context.SaveChanges();
+        _context!.SaveChanges();
 
       }
     }

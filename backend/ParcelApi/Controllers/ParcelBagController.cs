@@ -25,7 +25,7 @@ public class ParcelBagController : BagController
       {
         return NotFound("No parcel bags exist in the system");
       }
-      return bags;
+      return Ok(bags);
     }
     catch (Exception ex)
     {
@@ -44,7 +44,7 @@ public class ParcelBagController : BagController
       {
         return NotFound("Parcel bag with this ID does not exist in the system");
       }
-      return bag;
+      return Ok(bag);
     }
     catch (Exception ex)
     {

@@ -23,7 +23,7 @@ public class LetterBagController : BagController
     try
     {
       var bags = _bagService.GetAllLetterBags();
-      return bags;
+      return Ok(bags);
     }
     catch (Exception ex)
     {
@@ -42,7 +42,7 @@ public class LetterBagController : BagController
       {
         return NotFound("Letter bag with this ID does not exist in system");
       }
-      return bag;
+      return Ok(bag);
     }
     catch (Exception ex)
     {

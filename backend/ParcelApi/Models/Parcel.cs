@@ -8,7 +8,7 @@ public class Parcel
 {
   
   [Key]
-  [RegularExpression("^[A-Z]{2}[0-9]{6}[A-Z]{2}$", ErrorMessage = "Parcel ID must follow the format LLNNNNNNLL")]
+  [RegularExpression("^[A-Za-z]{2}[0-9]{6}[A-Za-z]{2}$", ErrorMessage = "Parcel ID must follow the format LLNNNNNNLL")]
   public string? ParcelId { get; set; }
 
   [Required(ErrorMessage = "RecipientName is required")]

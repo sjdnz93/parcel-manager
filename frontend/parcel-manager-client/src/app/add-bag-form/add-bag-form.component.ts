@@ -22,16 +22,14 @@ export class AddBagFormComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
 
   
+ngOnInit(){
+  this.addBagForm = new FormGroup({
+    bagType: new FormControl('Letter', [Validators.required]),
+    destinationCountry: new FormControl('LV', [Validators.required, Validators.pattern("^(EE|LV|FI)$")]),
+  });
+  this.shipmentId = this.route.snapshot.params['shipmentId'];;
+}
 
-
-
-  constructor() {
-    this.addBagForm = new FormGroup({
-      bagType: new FormControl('Letter', [Validators.required]),
-      destinationCountry: new FormControl('LV', [Validators.required, Validators.pattern("^(EE|LV|FI)$")]),
-    });
-    this.shipmentId = this.route.snapshot.params['shipmentId'];;
-  }
 
   bagFormSubmit() {
     const bagType = this.addBagForm.value.bagType;

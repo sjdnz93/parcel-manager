@@ -23,7 +23,7 @@ export class AddLettersFormComponent {
   letterBagService = inject(LetterBagService);
 
 
-  constructor() {
+  ngOnInit() {
     this.shipmentId = this.route.snapshot.params['shipmentId'];
     this.bagId = this.route.snapshot.params['bagId'];
 

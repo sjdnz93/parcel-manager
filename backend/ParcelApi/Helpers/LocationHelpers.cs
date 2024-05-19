@@ -22,14 +22,9 @@ public static class LocationHelpers
     else return false;
   }
 
-  public static bool DoesShipmentDestinationMatchBagDestination(string shipmentDestination, string bagDestination)
+  public static bool DoDestinationsMatch(string destination1, string destination2)
   {
-    return shipmentDestination == bagDestination ? true : false;
+    return destination1 == destination2 ? true : false;
   }
-
-  public static bool DoesBagDestinationMatchParcelDestination(string bagDestination, string parcelDestination)
-  {
-    return parcelDestination == bagDestination ? true : false;
-  }
-
+  
 }
