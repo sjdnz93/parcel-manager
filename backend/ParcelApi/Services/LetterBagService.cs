@@ -32,7 +32,6 @@ public class LetterBagService : BagService, ILetterBagService
         bag.ItemCount = 0;
         if (!bagListFromDb.Any(x => x.BagId == bag.BagId))
         {
-          //maybe i need to also add to Bags table?
           await _context.LetterBags.AddAsync(bag);
           await _context.SaveChangesAsync();
           break;

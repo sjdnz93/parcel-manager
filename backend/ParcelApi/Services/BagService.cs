@@ -84,5 +84,3 @@ public class BagService : IBagService
   }
 
 }
-
-// TODO add DELETE methods

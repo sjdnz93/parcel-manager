@@ -64,52 +64,5 @@ public class ParcelService : IParcelService
     }
 
   }
-
-  // public void UpdateParcel(string id, string? recipientName, decimal? weight, decimal? price)
-  // {
-  //   try
-  //   {
-  //     var parcel = Get(id);
-  //     if (parcel != null)
-  //     {
-  //       if (recipientName != null) parcel.RecipientName = recipientName;
-  //       if (weight != null)
-  //       {
-  //         var newWeight = (decimal)weight;
-  //         parcel.Weight = decimal.Parse(newWeight.ToString("#.###"));
-  //       } 
-  //       if (price != null)
-  //       {
-  //         var newPrice = (decimal)price;
-  //         parcel.Price = decimal.Parse(newPrice.ToString("#.##"));
-  //       } 
-  //       _context.SaveChanges();
-  //     }
-  //   }
-  //   catch (Exception ex)
-  //   {
-  //     Console.WriteLine($"Failed to update parcel - Error: {ex.Message}");
-  //     throw;
-  //   }
-  // }
-
-  // public void DeleteParcel(string id)
-  // {
-  //   try
-  //   {
-  //     var parcel = Get(id);
-  //     if (parcel != null)
-  //     {
-  //       _context.Parcels.Remove(parcel);
-  //       _context.SaveChanges();
-  //     }
-  //   }
-  //   catch (Exception ex)
-  //   {
-  //     Console.WriteLine($"Failed to delete parcel - Error: {ex.Message}");
-  //     throw;
-  //   }
-  // }
 }
 
-// TODO add finalisation check to PUT and DELETE methods

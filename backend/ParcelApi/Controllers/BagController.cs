@@ -34,5 +34,3 @@ public class BagController : ControllerBase
   }
 
 }
-
-// TODO add DELETE controller

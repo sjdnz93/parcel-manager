@@ -70,5 +70,3 @@ public class ParcelBagService : BagService, IParcelBagService
   }
 
 }
-
-// TODO async/await on parcelService.Add

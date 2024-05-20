@@ -30,7 +30,3 @@ public class Bag
   }
 
 }
-
-// TODO add field to get total price of bags
-
-// TODO double check all data types and validations

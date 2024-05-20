@@ -56,39 +56,4 @@ public class ShipmentServiceTests
     Assert.AreEqual(shipment, result);
   }
 
-
-
-  // [TestMethod]
-  // public async Task AddShipment_AddsShipment()
-  // {
-  //   // Arrange
-  //   var options = new DbContextOptionsBuilder<ParcelManagerContext>()
-  //       .UseInMemoryDatabase(databaseName: "TestDatabase")
-  //       .Options;
-
-  //   var mockContext = new Mock<ParcelManagerContext>(options);
-  //   var shipmentService = new ShipmentService(mockContext.Object);
-
-  //   Shipment newShipment = new Shipment
-  //   {
-  //     ShipmentId = "BBB-111111",
-  //     DestinationCountry = "EE",
-  //     FlightDate = DateTime.Now.AddDays(10),
-  //     Airport = AirportCodes.TLL,
-  //     Bags = new List<Bag>(),
-  //     IsFinalised = false,
-  //     FlightNumber = "BB1111"
-  //   };
-
-  //   // Act
-  //   await shipmentService.AddShipment(newShipment);
-
-  //   // Assert
-  //   Assert.IsNotNull(newShipment.ShipmentId);
-  //   Assert.IsTrue(newShipment.Bags.Count == 0);
-  //   Assert.IsFalse(newShipment.IsFinalised);
-  //   Assert.IsFalse(string.IsNullOrEmpty(newShipment.FlightNumber));
-
-  // }
-
 }

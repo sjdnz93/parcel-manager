@@ -20,7 +20,7 @@ builder.Services.AddScoped<ILetterBagService, LetterBagService>();
 builder.Services.AddScoped<IParcelService, ParcelService>();
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
 
-builder.Services.AddCors(); // Add this line to register CORS services
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -44,5 +44,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-// TODO tidy up code base
