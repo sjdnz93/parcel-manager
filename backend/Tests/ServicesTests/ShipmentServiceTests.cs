@@ -1,9 +1,14 @@
 ﻿using Moq;
-using Moq.Language;
+using Moq.Language.Flow;
+using ParcelApi.Interfaces;
 using ParcelApi.Models;
 using ParcelApi.Models.Bags;
 using ParcelApi.Services;
 using Tests.DataMock;
+using ParcelApi.Data;
+using Microsoft.EntityFrameworkCore;
+
+using ParcelApi.Helpers;
 
 
 namespace Tests.ServiceTests;
@@ -13,19 +18,19 @@ public class ShipmentServiceTests
 {
 
   [TestMethod]
-  public void GetAll_ReturnsAllShipments()
+  public async Task GetAll_ReturnsAllShipments()
   {
 
     // Arrange
-    var mockShipmentService = new Mock<ShipmentService>();
+    var mockShipmentService = new Mock<IShipmentService>();
 
     var shipments = MockDb.GetMockData();
 
-    mockShipmentService.Setup(s => s.GetAll()).Returns(shipments);
+    mockShipmentService.Setup(s => s.GetAll()).Returns(Task.FromResult(shipments));
 
     // Act
 
-    var result = mockShipmentService.Object.GetAll();
+    var result = await mockShipmentService.Object.GetAll();
 
     // Assert
     Assert.IsNotNull(result);
@@ -34,58 +39,55 @@ public class ShipmentServiceTests
   }
 
   [TestMethod]
-  public void Get_ReturnsSingleShipment()
+  public async Task Get_ReturnsSingleShipment()
   {
 
-    var mockShipmentService = new Mock<ShipmentService>();
+    var mockShipmentService = new Mock<IShipmentService>();
 
     var shipment = MockDb.GetMockData()[0];
 
     var shipmentId = shipment.ShipmentId!;
 
-    mockShipmentService.Setup(s => s.Get(shipmentId)).Returns(shipment);
+    mockShipmentService.Setup(s => s.Get(shipmentId)).Returns(Task.FromResult<Shipment?>(shipment));
 
-    var result = mockShipmentService.Object.Get(shipmentId);
+    var result = await mockShipmentService.Object.Get(shipmentId);
 
     Assert.IsNotNull(result);
     Assert.AreEqual(shipment, result);
   }
 
+
+
   // [TestMethod]
-  // public void AddShipment_AddsShipment()
+  // public async Task AddShipment_AddsShipment()
   // {
+  //   // Arrange
+  //   var options = new DbContextOptionsBuilder<ParcelManagerContext>()
+  //       .UseInMemoryDatabase(databaseName: "TestDatabase")
+  //       .Options;
 
-  //   var mockShipmentService = new Mock<ShipmentService>();
-  //   var shipments = MockDb.GetMockData();
+  //   var mockContext = new Mock<ParcelManagerContext>(options);
+  //   var shipmentService = new ShipmentService(mockContext.Object);
 
-  //   var originalCount = shipments.Count;
-
-  //   var newShipment = new Shipment
+  //   Shipment newShipment = new Shipment
   //   {
   //     ShipmentId = "BBB-111111",
+  //     DestinationCountry = "EE",
   //     FlightDate = DateTime.Now.AddDays(10),
-  //     FlightNumber = "AA0994",
-  //     DestinationCountry = "LV",
   //     Airport = AirportCodes.TLL,
   //     Bags = new List<Bag>(),
-  //     IsFinalised = false
+  //     IsFinalised = false,
+  //     FlightNumber = "BB1111"
   //   };
 
-  //   mockShipmentService.Setup(s => s.AddShipment(newShipment));
+  //   // Act
+  //   await shipmentService.AddShipment(newShipment);
 
-  //   mockShipmentService.Object.AddShipment(newShipment);
-
-  //   var updatedShipments = MockDb.GetMockData();
-
-  //   var createdShipment = mockShipmentService.Object.Get(newShipment.ShipmentId);
-  //   var newCount = updatedShipments.Count;
-
-  //   Assert.IsNotNull(createdShipment);
-  //   Assert.AreEqual(newCount, originalCount + 1);
-
-
-
-
+  //   // Assert
+  //   Assert.IsNotNull(newShipment.ShipmentId);
+  //   Assert.IsTrue(newShipment.Bags.Count == 0);
+  //   Assert.IsFalse(newShipment.IsFinalised);
+  //   Assert.IsFalse(string.IsNullOrEmpty(newShipment.FlightNumber));
 
   // }
 

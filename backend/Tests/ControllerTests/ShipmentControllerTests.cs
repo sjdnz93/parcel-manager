@@ -12,18 +12,18 @@ namespace Tests.ControllerTests;
 public class ShipmentControllerTests
 {
   [TestMethod]
-  public void GetAll_ReturnsOkObjectResult()
+  public async Task GetAll_ReturnsOkObjectResult()
   {
     // Arrange
     var mockShipmentService = new Mock<ShipmentService>();
     var shipments = MockDb.GetMockData();
 
-    mockShipmentService.Setup(s => s.GetAll()).Returns(shipments);
+    mockShipmentService.Setup(s => s.GetAll()).ReturnsAsync(shipments);
 
     var controller = new ShipmentController(mockShipmentService.Object);
 
     // Act
-    var result = controller.GetAll();
+    var result = await controller.GetAll();
 
     // Assert
     var okResult = result.Result as OkObjectResult;
@@ -34,7 +34,7 @@ public class ShipmentControllerTests
 
 
   [TestMethod]
-  public void GetAll_ReturnsBadRequestObjectResult_OnFailure()
+  public async Task GetAll_ReturnsBadRequestObjectResult_OnFailure()
   {
     // Arrange
     var mockShipmentService = new Mock<ShipmentService>();
@@ -43,7 +43,7 @@ public class ShipmentControllerTests
     var controller = new ShipmentController(mockShipmentService.Object);
 
     // Act
-    var result = controller.GetAll();
+    var result = await controller.GetAll();
 
     // Assert
     Assert.IsNotNull(result);
@@ -54,7 +54,7 @@ public class ShipmentControllerTests
   }
 
   [TestMethod]
-  public void Get_ReturnsOkObjectResult()
+  public async Task Get_ReturnsOkObjectResult()
   {
     // Arrange
     var mockShipmentService = new Mock<ShipmentService>();
@@ -66,12 +66,12 @@ public class ShipmentControllerTests
 
     var testShipmentId = "AA1-AAAAA1";
 
-    mockShipmentService.Setup(s => s.Get(mockShipmentId)).Returns(shipment);
+    mockShipmentService.Setup(s => s.Get(mockShipmentId)).ReturnsAsync(shipment);
 
     var controller = new ShipmentController(mockShipmentService.Object);
 
     // Act
-    var result = controller.Get(testShipmentId);
+    var result = await controller.Get(testShipmentId);
 
     // Assert
     Assert.IsNotNull(result);
@@ -82,7 +82,7 @@ public class ShipmentControllerTests
   }
 
   [TestMethod]
-  public void Get_ReturnsNotFoundObjectResultIfShipmentNotFound()
+  public async Task Get_ReturnsNotFoundObjectResultIfShipmentNotFound()
   {
     // Arrange
     var mockShipmentService = new Mock<ShipmentService>();
@@ -94,12 +94,12 @@ public class ShipmentControllerTests
 
     var testShipmentId = "BB1-BBBBB1";
 
-    mockShipmentService.Setup(s => s.Get(mockShipmentId)).Returns(shipment);
+    mockShipmentService.Setup(s => s.Get(mockShipmentId)).ReturnsAsync(shipment);
 
     var controller = new ShipmentController(mockShipmentService.Object);
 
     // Act
-    var result = controller.Get(testShipmentId);
+    var result = await controller.Get(testShipmentId);
 
     // Assert
     Assert.IsNotNull(result);
@@ -109,7 +109,7 @@ public class ShipmentControllerTests
   }
 
   [TestMethod]
-  public void CreateShipment_ReturnsCreatedAtAction()
+  public async Task CreateShipment_ReturnsCreatedAtAction()
   {
     // Arrange
     var mockShipmentService = new Mock<ShipmentService>();
@@ -128,7 +128,7 @@ public class ShipmentControllerTests
     };
 
     // Act
-    var result = controller.CreateShipment(newShipment);
+    var result = await controller.CreateShipment(newShipment);
 
     // Assert
     Assert.IsNotNull(result);

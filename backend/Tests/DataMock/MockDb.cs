@@ -5,7 +5,7 @@ namespace Tests.DataMock;
 
 public static class MockDb
 {
-      public static List<Shipment> Shipments { get; } = new List<Shipment>
+  public static List<Shipment> Shipments { get; } = new List<Shipment>
     {
         new Shipment
         {
@@ -54,9 +54,14 @@ public static class MockDb
         },
     };
 
-    public static List<Shipment> GetMockData()
-    {
-        return Shipments.ToList();
-    }
+  public static List<Shipment> GetMockData()
+  {
+    return Shipments.ToList();
+  }
+
+  public static void AddShipment(Shipment shipment)
+  {
+    Shipments.Add(shipment);
+  }
 
 }
